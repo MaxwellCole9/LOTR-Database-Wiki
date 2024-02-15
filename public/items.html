@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Items</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    
     <script>
         function fetchItems() {
             fetch('/api/items')
                 .then(response => response.json())
                 .then(items => {
-                    const itemsContainer = document.getElementById('itemsContainer');
-                    itemsContainer.innerHTML = '';
+                    const container = document.getElementById('container');
+                    container.innerHTML = '';
                     items.forEach(item => {
                         const itemElement = document.createElement('div');
                         itemElement.innerHTML = `<h2>${item.name}</h2>
                                                  <p>Description: ${item.itemDescription}</p>
                                                  <p>Level Required: ${item.levelRequired}</p>`;
-                        itemsContainer.appendChild(itemElement);
+                        container.appendChild(itemElement);
                     });
                 })
                 .catch(error => console.error('Error fetching items:', error));
@@ -25,8 +27,8 @@
     </script>
 </head>
 <body>
-    <h1>Items</h1>
-    <div id="itemsContainer">
+    <h1 id="page-title">Items</h1>
+    <div id="container">
         <!-- Categories will be added here by the script -->
     </div>
 </body>

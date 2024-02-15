@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Categories</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
     <script>
         function fetchCategories() {
             fetch('/api/categories')
                 .then(response => response.json())
                 .then(categories => {
-                    const categoriesContainer = document.getElementById('categoriesContainer');
-                    categoriesContainer.innerHTML = '';
+                    const container = document.getElementById('container');
+                    container.innerHTML = '';
                     categories.forEach(category => {
                         const categoryElement = document.createElement('div');
                         categoryElement.innerHTML = `<h2>${category.category}</h2>
                                                      <p>Description: ${category.categoryDescription}</p>`;
-                        categoriesContainer.appendChild(categoryElement);
+                        container.appendChild(categoryElement);
                     });
                 })
         }
@@ -23,8 +25,8 @@
     </script>
 </head>
 <body>
-    <h1>Categories</h1>
-    <div id="categoriesContainer">
+    <h1 id="page-title">Categories</h1>
+    <div id="container">
         <!-- Categories will be added here by the script -->
     </div>
 </body>

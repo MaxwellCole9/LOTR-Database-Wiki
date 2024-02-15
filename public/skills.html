@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Skills</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
     <script>
         function fetchSkills() {
             fetch('/api/skills')
                 .then(response => response.json())
                 .then(skills => {
-                    const skillsContainer = document.getElementById('skillsContainer');
-                    skillsContainer.innerHTML = '';
+                    const container = document.getElementById('container');
+                    container.innerHTML = '';
                     skills.forEach(skill => {
                         const skillElement = document.createElement('div');
                         skillElement.innerHTML = `<h2>${skill.skillName}</h2>
                                                   <p>Description: ${skill.skillDescription}</p>
                                                   <p>Effect: ${skill.skillEffect}</p>
                                                   <p>Level Required: ${skill.levelRequired}</p>`;
-                        skillsContainer.appendChild(skillElement);
+                        container.appendChild(skillElement);
                     });
                 })
         }
@@ -25,8 +27,8 @@
     </script>
 </head>
 <body>
-    <h1>Skills</h1>
-    <div id="skillsContainer">
+    <h1 id="page-title">Skills</h1>
+    <div id="container">
         <!-- Skills will be added here by the script -->
     </div>
 </body>

@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Characters</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
     <script>
         // Function to fetch character data from the server
         function fetchCharacters() {
             fetch('/api/characters')
                 .then(response => response.json())
                 .then(characters => {
-                    const charactersContainer = document.getElementById('charactersContainer');
-                    charactersContainer.innerHTML = ''; // Clear existing content
+                    const container = document.getElementById('container');
+                    container.innerHTML = ''; // Clear existing content
                     characters.forEach(character => {
                         const characterElement = document.createElement('div');
                         characterElement.innerHTML = `<h2>${character.name}</h2>
@@ -19,7 +21,7 @@
                                                       <p>Dexterity: ${character.dexterity}</p>
                                                       <p>Defense: ${character.defense || 'N/A'}</p>
                                                       <p>Attack: ${character.attack || 'N/A'}</p>`;
-                        charactersContainer.appendChild(characterElement);
+                        container.appendChild(characterElement);
                     });
                 })
         }
@@ -28,8 +30,8 @@
     </script>
 </head>
 <body>
-    <h1>Characters</h1>
-    <div id="charactersContainer">
+    <h1 id="page-title">Characters</h1>
+    <div id="container">
         <!-- Characters will be added here by the script -->
     </div>
 </body>

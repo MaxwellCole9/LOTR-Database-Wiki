@@ -14,11 +14,17 @@ body {
     margin-right: 5%;
 }
 
+#landing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
 #title {
     font-family: "Bilbo", cursive;
     color: #488B49;
     font-size: 3em;
-    font-weight: 400;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -41,7 +47,25 @@ body {
 }
 
 #page-selector a {
-    color: #F46036;
-    text-decoration: none;
+    color: #73AB84;
     padding: 0 10px 0 10px;
+}
+
+#page-title {
+    font-family: "Bilbo", cursive;
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #73AB84;
+}
+
+#container {
+    font-size: 1.2em;
+    background-color: #C6D2CE;
+    border-radius: 25px;
+    padding: 2.5% 2.5% 2.5% 2.5%;
+    margin-bottom: 2.5%;
+}
+
+#container div {
+    margin-bottom: 2.5%;
 }

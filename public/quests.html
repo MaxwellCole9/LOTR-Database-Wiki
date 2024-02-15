@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Quests</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
     <script>
         function fetchQuests() {
             fetch('/api/quests')
                 .then(response => response.json())
                 .then(quests => {
-                    const questsContainer = document.getElementById('questsContainer');
-                    questsContainer.innerHTML = '';
+                    const container = document.getElementById('container');
+                    container.innerHTML = '';
                     quests.forEach(quest => {
                         const questElement = document.createElement('div');
                         questElement.innerHTML = `<h2>${quest.questTitle}</h2>
@@ -17,7 +19,7 @@
                                                   <p>Location: ${quest.questLocation}</p>
                                                   <p>Status: ${quest.questStatus}</p>
                                                   <p>Level Required: ${quest.levelRequired}</p>`;
-                        questsContainer.appendChild(questElement);
+                        container.appendChild(questElement);
                     });
                 })
         }
@@ -26,8 +28,8 @@
     </script>
 </head>
 <body>
-    <h1>Quests</h1>
-    <div id="questsContainer">
+    <h1 id="page-title">Quests</h1>
+    <div id="container">
         <!-- Quests will be added here by the script -->
     </div>
 </body>

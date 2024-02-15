@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+    <script>
+        function fetchCategories() {
+            fetch('/api/categories')
+                .then(response => response.json())
+                .then(categories => {
+                    const categoriesContainer = document.getElementById('categoriesContainer');
+                    categoriesContainer.innerHTML = '';
+                    categories.forEach(category => {
+                        const categoryElement = document.createElement('div');
+                        categoryElement.innerHTML = `<h2>${category.category}</h2>
+                                                     <p>Description: ${category.categoryDescription}</p>`;
+                        categoriesContainer.appendChild(categoryElement);
+                    });
+                })
+        }
+
+        window.onload = fetchCategories;
+    </script>
+</head>
+<body>
+    <h1>Categories</h1>
+    <div id="categoriesContainer">
+        <!-- Categories will be added here by the script -->
+    </div>
+</body>
+</html>

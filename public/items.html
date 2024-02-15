@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Items</title>
+    <script>
+        function fetchItems() {
+            fetch('/api/items')
+                .then(response => response.json())
+                .then(items => {
+                    const itemsContainer = document.getElementById('itemsContainer');
+                    itemsContainer.innerHTML = '';
+                    items.forEach(item => {
+                        const itemElement = document.createElement('div');
+                        itemElement.innerHTML = `<h2>${item.name}</h2>
+                                                 <p>Description: ${item.itemDescription}</p>
+                                                 <p>Level Required: ${item.levelRequired}</p>`;
+                        itemsContainer.appendChild(itemElement);
+                    });
+                })
+                .catch(error => console.error('Error fetching items:', error));
+        }
+
+        window.onload = fetchItems;
+    </script>
+</head>
+<body>
+    <h1>Items</h1>
+    <div id="itemsContainer">
+        <!-- Categories will be added here by the script -->
+    </div>
+</body>
+</html>

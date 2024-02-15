@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quests</title>
+    <script>
+        function fetchQuests() {
+            fetch('/api/quests')
+                .then(response => response.json())
+                .then(quests => {
+                    const questsContainer = document.getElementById('questsContainer');
+                    questsContainer.innerHTML = '';
+                    quests.forEach(quest => {
+                        const questElement = document.createElement('div');
+                        questElement.innerHTML = `<h2>${quest.questTitle}</h2>
+                                                  <p>Description: ${quest.questDescription}</p>
+                                                  <p>Location: ${quest.questLocation}</p>
+                                                  <p>Status: ${quest.questStatus}</p>
+                                                  <p>Level Required: ${quest.levelRequired}</p>`;
+                        questsContainer.appendChild(questElement);
+                    });
+                })
+        }
+
+        window.onload = fetchQuests;
+    </script>
+</head>
+<body>
+    <h1>Quests</h1>
+    <div id="questsContainer">
+        <!-- Quests will be added here by the script -->
+    </div>
+</body>
+</html>

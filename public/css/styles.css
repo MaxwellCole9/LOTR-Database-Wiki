@@ -21,6 +21,12 @@ body {
     flex-direction: column;
 }
 
+#logoImg{
+    width: 25%;
+    height: 25%;
+    margin-bottom: -2.5%;
+}
+
 #title {
     font-family: "Bilbo", cursive;
     color: #488B49;

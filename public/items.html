@@ -6,24 +6,38 @@
     <link rel="stylesheet" href="/css/styles.css">
     
     <script>
-        function fetchItems() {
-            fetch('/api/items')
-                .then(response => response.json())
+        // Function for fetching and searching character data from the server
+        function fetchItems(filter = '') { // Utilizing specifically the content typed into the search bar
+            fetch('/api/items')              // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+                .then(response => response.json())        // await response to catch errors
                 .then(items => {
-                    const container = document.getElementById('container');
-                    container.innerHTML = '';
-                    items.forEach(item => {
-                        const itemElement = document.createElement('div');
+                    const filteredItems = items.filter(item => 
+                        item.name.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
+                    const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
+                    container.innerHTML = '';         // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
+                    filteredItems.forEach(item => {
+                        const itemElement = document.createElement('div'); // Creating a new div for each item (ensuring spacing)
+                        // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         itemElement.innerHTML = `<h2>${item.name}</h2>
-                                                 <p>Description: ${item.itemDescription}</p>
-                                                 <p>Level Required: ${item.levelRequired}</p>`;
-                        container.appendChild(itemElement);
+                                                <p>Description: ${item.itemDescription}</p>
+                                                <p>Level Required: ${item.levelRequired}</p>`;
+                        container.appendChild(itemElement); // Append new child div to container on successful creation
                     });
-                })
-                .catch(error => console.error('Error fetching items:', error));
+                });
         }
 
-        window.onload = fetchItems;
+        // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search');
+            searchInput.addEventListener('input', () => {
+                const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
+                fetchItems(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
+        });
+        
+            // Initial fetch of characters without filter (ensures all display on initial page load)
+            fetchItems();
+        });
+
     </script>
 </head>
 <body>
@@ -39,6 +53,8 @@
     </header>
 
     <h1 id="page-title">Items</h1>
+    <input type="text" id="search" placeholder="Search items">
+
     <div id="container">
         <!-- Categories will be added here by the script -->
     </div>

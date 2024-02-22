@@ -6,25 +6,41 @@
     <link rel="stylesheet" href="/css/styles.css">
 
     <script>
-        function fetchSkills() {
-            fetch('/api/skills')
-                .then(response => response.json())
+        // Function for fetching and searching character data from the server
+        function fetchSkills(filter = '') { // Utilizing specifically the content typed into the search bar
+            fetch('/api/skills')             // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+                .then(response => response.json())       // await response to catch errors
                 .then(skills => {
-                    const container = document.getElementById('container');
-                    container.innerHTML = '';
-                    skills.forEach(skill => {
-                        const skillElement = document.createElement('div');
+                    const filteredSkills = skills.filter(skill => 
+                        skill.skillName.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
+                    const container = document.getElementById('container');            // Finding document 'container' placeholder to be filled with data
+                    container.innerHTML = '';        // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
+                    filteredSkills.forEach(skill => {
+                        const skillElement = document.createElement('div'); // Creating a new div for each skill (ensuring spacing)
+                        // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         skillElement.innerHTML = `<h2>${skill.skillName}</h2>
-                                                  <p>Description: ${skill.skillDescription}</p>
-                                                  <p>Effect: ${skill.skillEffect}</p>
-                                                  <p>Level Required: ${skill.levelRequired}</p>`;
-                        container.appendChild(skillElement);
+                                                <p>Description: ${skill.skillDescription}</p>
+                                                <p>Effect: ${skill.skillEffect}</p>
+                                                <p>Level Required: ${skill.levelRequired}</p>`;
+                        container.appendChild(skillElement); // Append new child div to container on successful creation
                     });
-                })
-        }
+                });
+        }       
 
-        window.onload = fetchSkills;
+        // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search');
+            searchInput.addEventListener('input', () => {
+                const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
+                fetchSkills(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
+        });
+        
+            // Initial fetch of skills without filter (ensures all display on initial page load)
+            fetchSkills();
+        });
+
     </script>
+
 </head>
 <body>
     <header>
@@ -39,6 +55,8 @@
     </header>
 
     <h1 id="page-title">Skills</h1>
+    <input type="text" id="search" placeholder="Search skills">
+
     <div id="container">
         <!-- Skills will be added here by the script -->
     </div>

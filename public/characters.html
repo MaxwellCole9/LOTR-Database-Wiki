@@ -6,27 +6,42 @@
     <link rel="stylesheet" href="/css/styles.css">
 
     <script>
-        // Function to fetch character data from the server
-        function fetchCharacters() {
-            fetch('/api/characters')
-                .then(response => response.json())
+        // Function for fetching and searching character data from the server
+        function fetchCharacters(filter = '') { // Utilizing specifically the content typed into the search bar
+            fetch('/api/characters')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+                .then(response => response.json())      // await response to catch errors
                 .then(characters => {
-                    const container = document.getElementById('container');
-                    container.innerHTML = ''; // Clear existing content
-                    characters.forEach(character => {
-                        const characterElement = document.createElement('div');
+                    const filteredCharacters = characters.filter(character => 
+                        character.name.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
+
+                    const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
+                    container.innerHTML = '';       // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
+                    filteredCharacters.forEach(character => {
+                        const characterElement = document.createElement('div'); // Creating a new div for each character (ensuring spacing)
+                        // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         characterElement.innerHTML = `<h2>${character.name}</h2>
-                                                      <p>Description: ${character.characterDescription || 'N/A'}</p>
-                                                      <p>Health: ${character.health}</p>
-                                                      <p>Dexterity: ${character.dexterity}</p>
-                                                      <p>Defense: ${character.defense || 'N/A'}</p>
-                                                      <p>Attack: ${character.attack || 'N/A'}</p>`;
-                        container.appendChild(characterElement);
+                                                    <p>Description: ${character.characterDescription || 'N/A'}</p>
+                                                    <p>Health: ${character.health}</p>
+                                                    <p>Dexterity: ${character.dexterity}</p>
+                                                    <p>Defense: ${character.defense || 'N/A'}</p>
+                                                    <p>Attack: ${character.attack || 'N/A'}</p>`;
+                        container.appendChild(characterElement); // Append new child div to container on succesful creation
                     });
-                })
-        }
-        // Fetch characters when the page loads
-        window.onload = fetchCharacters;
+                });
+        }       
+
+        // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search');
+            searchInput.addEventListener('input', () => {
+                const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
+                fetchCharacters(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
+        });
+        
+            // Initial fetch of characters without filter (ensures all display on initial page load)
+            fetchCharacters();
+        });
+
     </script>
 </head>
 <body>
@@ -42,6 +57,8 @@
     </header>
 
     <h1 id="page-title">Characters</h1>
+    <input type="text" id="search" placeholder="Search characters">
+
     <div id="container">
         <!-- Characters will be added here by the script -->
     </div>

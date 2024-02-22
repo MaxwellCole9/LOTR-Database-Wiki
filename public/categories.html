@@ -6,23 +6,40 @@
     <link rel="stylesheet" href="/css/styles.css">
 
     <script>
-        function fetchCategories() {
-            fetch('/api/categories')
-                .then(response => response.json())
+        // Function for fetching and searching character data from the server
+        function fetchCategories(filter = '') { // Utilizing specifically the content typed into the search bar
+            fetch('/api/categories')             // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+                .then(response => response.json())       // await response to catch errors
                 .then(categories => {
-                    const container = document.getElementById('container');
-                    container.innerHTML = '';
-                    categories.forEach(category => {
-                        const categoryElement = document.createElement('div');
+                    const filteredCategories = categories.filter(category => 
+                        category.category.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
+                    
+                    const container = document.getElementById('container');            // Finding document 'container' placeholder to be filled with data
+                    container.innerHTML = '';        // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
+                    filteredCategories.forEach(category => {
+                        const categoryElement = document.createElement('div'); // Creating a new div for each category (ensuring spacing)
+                        // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         categoryElement.innerHTML = `<h2>${category.category}</h2>
-                                                     <p>Description: ${category.categoryDescription}</p>`;
-                        container.appendChild(categoryElement);
+                                                    <p>Description: ${category.categoryDescription}</p>`;
+                        container.appendChild(categoryElement); // Append new child div to container on successful creation
                     });
-                })
-        }
+                });
+        }   
 
-        window.onload = fetchCategories;
+        // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search');
+            searchInput.addEventListener('input', () => {
+                const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
+                fetchCategories(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
+        });
+        
+            // Initial fetch of characters without filter (ensures all display on initial page load)
+            fetchCategories();
+        });
+
     </script>
+
 </head>
 <body>
     <header>
@@ -37,6 +54,8 @@
     </header>
 
     <h1 id="page-title">Categories</h1>
+    <input type="text" id="search" placeholder="Search categories">
+
     <div id="container">
         <!-- Categories will be added here by the script -->
     </div>

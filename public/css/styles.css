@@ -89,6 +89,17 @@ header nav a {
     margin: 5% 5% 5% 5%;
 }
 
+#search {
+    width: 98%;
+    background-color: #C6D2CE;
+    color: #0A0A0A;
+    font-size: 1em;
+    padding: 1% 1% 1% 1%;
+    border-radius: 25px;
+    margin-bottom: 2.5%;
+    border: none;
+}
+
 
 #container {
     font-size: 1.2em;

@@ -5,26 +5,42 @@
     <title>Quests</title>
     <link rel="stylesheet" href="/css/styles.css">
 
+
     <script>
-        function fetchQuests() {
-            fetch('/api/quests')
-                .then(response => response.json())
+        // Function for fetching and searching character data from the server
+        function fetchQuests(filter = '') { // Utilizing specifically the content typed into the search bar
+            fetch('/api/quests')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+                .then(response => response.json())      // await response to catch errors
                 .then(quests => {
-                    const container = document.getElementById('container');
-                    container.innerHTML = '';
-                    quests.forEach(quest => {
-                        const questElement = document.createElement('div');
+                    const filteredQuests = quests.filter(quest => 
+                        quest.questTitle.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
+                    const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
+                    container.innerHTML = '';       // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
+                    filteredQuests.forEach(quest => {
+                        const questElement = document.createElement('div'); // Creating a new div for each quest (ensuring spacing)
+                        // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         questElement.innerHTML = `<h2>${quest.questTitle}</h2>
-                                                  <p>Description: ${quest.questDescription}</p>
-                                                  <p>Location: ${quest.questLocation}</p>
-                                                  <p>Status: ${quest.questStatus}</p>
-                                                  <p>Level Required: ${quest.levelRequired}</p>`;
-                        container.appendChild(questElement);
+                                                <p>Description: ${quest.questDescription}</p>
+                                                <p>Location: ${quest.questLocation}</p>
+                                                <p>Status: ${quest.questStatus}</p>
+                                                <p>Level Required: ${quest.levelRequired}</p>`;
+                        container.appendChild(questElement); // Append new child div to container on successful creation
                     });
-                })
+                });
         }
 
-        window.onload = fetchQuests;
+        // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search');
+            searchInput.addEventListener('input', () => {
+                const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
+                fetchQuests(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
+        });
+        
+            // Initial fetch of characters without filter (ensures all display on initial page load)
+            fetchQuests();
+        });
+
     </script>
 </head>
 <body>
@@ -40,6 +56,8 @@
     </header>
 
     <h1 id="page-title">Quests</h1>
+    <input type="text" id="search" placeholder="Search quests">
+
     <div id="container">
         <!-- Quests will be added here by the script -->
     </div>

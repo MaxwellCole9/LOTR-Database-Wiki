@@ -2,12 +2,12 @@ var express = require('express');
 var app = express();
 const PORT = 5625;
 
-var db = require('./db-connector'); // Make sure this module correctly connects to your MySQL database
+var db = require('./db-connector');
 
 app.use(express.static('public'));
 
 app.get('/api/Characters', function(req, res) {
-    const query = 'SELECT * FROM Characters;'; // Adjust based on your actual table structure
+    const query = 'SELECT * FROM Characters;';
 
     db.pool.query(query, function(err, results) {
         if (err) {
@@ -20,7 +20,7 @@ app.get('/api/Characters', function(req, res) {
 });
 
 app.get('/api/Skills', function(req, res) {
-    const query = 'SELECT * FROM Skills;'; // Adjust based on your actual table structure
+    const query = 'SELECT * FROM Skills;';
 
     db.pool.query(query, function(err, results) {
         if (err) {
@@ -33,7 +33,7 @@ app.get('/api/Skills', function(req, res) {
 });
 
 app.get('/api/Items', function(req, res) {
-    const query = 'SELECT * FROM Items;'; // Adjust based on your actual table structure
+    const query = 'SELECT * FROM Items;';
 
     db.pool.query(query, function(err, results) {
         if (err) {
@@ -46,7 +46,7 @@ app.get('/api/Items', function(req, res) {
 });
 
 app.get('/api/Categories', function(req, res) {
-    const query = 'SELECT * FROM Categories;'; // Adjust based on your actual table structure
+    const query = 'SELECT * FROM Categories;';
 
     db.pool.query(query, function(err, results) {
         if (err) {
@@ -59,7 +59,7 @@ app.get('/api/Categories', function(req, res) {
 });
 
 app.get('/api/Quests', function(req, res) {
-    const query = 'SELECT * FROM Quests;'; // Adjust based on your actual table structure
+    const query = 'SELECT * FROM Quests;';
 
     db.pool.query(query, function(err, results) {
         if (err) {

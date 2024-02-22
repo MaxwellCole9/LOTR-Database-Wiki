@@ -14,6 +14,33 @@ body {
     margin-right: 5%;
 }
 
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #C6D2CE;
+    padding: 10px 0 10px 0;
+    text-align: center;
+    z-index: 1000;
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    list-style-type: none;
+}
+
+header nav a {
+    color: #488B49;
+    text-decoration: none;
+    font-size: 1.5em;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 #landing {
     display: flex;
     align-items: center;
@@ -21,48 +48,47 @@ body {
     flex-direction: column;
 }
 
+#title-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 5%;
+}
+
 #logoImg{
     width: 25%;
     height: 25%;
-    margin-bottom: -2.5%;
 }
 
 #title {
     font-family: "Bilbo", cursive;
     color: #488B49;
-    font-size: 3em;
+    font-size: 5em;
     text-align: center;
     margin-bottom: 20px;
 }
 
-#page-selector{
-    background-color: #C6D2CE;
-    width: fit-content;
-    padding: 1% 1% 1% 1%;
-    border-radius: 25px;
-}
-
-#page-selector h2 {
-    text-align: center;
-}
-
-#page-selector ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-#page-selector a {
-    color: #73AB84;
-    padding: 0 10px 0 10px;
-}
-
 #page-title {
+    margin-top: 5%;
     font-family: "Bilbo", cursive;
     font-size: 3em;
     margin-bottom: 20px;
     color: #73AB84;
 }
+
+#contributors {
+    font-size: 1.2em;
+    padding: 2.5% 2.5% 2.5% 2.5%;
+    background-color: #C6D2CE;
+    border-radius: 25px;
+}
+
+#description {
+    font-size: 1.2em;
+    margin: 5% 5% 5% 5%;
+}
+
 
 #container {
     font-size: 1.2em;

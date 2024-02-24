@@ -71,6 +71,71 @@ app.get('/api/Quests', function(req, res) {
     });
 });
 
+app.get('/api/CharacterSkills', function(req, res) {
+    const query = 'SELECT * FROM CharacterSkills;';
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error fetching characters: ', err);
+            res.status(500).send('Error fetching characters');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+app.get('/api/CharacterSkills', function(req, res) {
+    const query = 'SELECT * FROM CharacterSkills;';
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error fetching characters: ', err);
+            res.status(500).send('Error fetching characters');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+app.get('/api/ItemCategories', function(req, res) {
+    const query = 'SELECT * FROM ItemCategories;';
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error fetching characters: ', err);
+            res.status(500).send('Error fetching characters');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+app.get('/api/QuestRequirements', function(req, res) {
+    const query = 'SELECT * FROM QuestRequirements;';
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error fetching characters: ', err);
+            res.status(500).send('Error fetching characters');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+app.get('/api/SkillCategories', function(req, res) {
+    const query = 'SELECT * FROM SkillCategories;';
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error fetching characters: ', err);
+            res.status(500).send('Error fetching characters');
+            return;
+        }
+        res.json(results);
+    });
+});
+
 app.listen(PORT, function() {
     console.log('Server started on http://localhost:' + PORT + '; press Ctrl-C to terminate.');
 });

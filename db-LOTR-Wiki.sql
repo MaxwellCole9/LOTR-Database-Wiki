@@ -55,8 +55,8 @@ CREATE TABLE `CharacterSkills` (
   `skillID` int(11) NOT NULL,
   PRIMARY KEY (`characterID`,`skillID`),
   KEY `skillID` (`skillID`),
-  CONSTRAINT `CharacterSkills_ibfk_1` FOREIGN KEY (`characterID`) REFERENCES `Characters` (`characterID`),
-  CONSTRAINT `CharacterSkills_ibfk_2` FOREIGN KEY (`skillID`) REFERENCES `Skills` (`skillID`)
+  CONSTRAINT `CharacterSkills_ibfk_1` FOREIGN KEY (`characterID`) REFERENCES `Characters` (`characterID`) ON DELETE CASCADE,
+  CONSTRAINT `CharacterSkills_ibfk_2` FOREIGN KEY (`skillID`) REFERENCES `Skills` (`skillID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -111,8 +111,8 @@ CREATE TABLE `ItemCategories` (
   `categoryID` int(11) NOT NULL,
   PRIMARY KEY (`itemID`,`categoryID`),
   KEY `categoryID` (`categoryID`),
-  CONSTRAINT `ItemCategories_ibfk_1` FOREIGN KEY (`itemID`) REFERENCES `Items` (`itemID`),
-  CONSTRAINT `ItemCategories_ibfk_2` FOREIGN KEY (`categoryID`) REFERENCES `Categories` (`categoryID`)
+  CONSTRAINT `ItemCategories_ibfk_1` FOREIGN KEY (`itemID`) REFERENCES `Items` (`itemID`) ON DELETE CASCADE,
+  CONSTRAINT `ItemCategories_ibfk_2` FOREIGN KEY (`categoryID`) REFERENCES `Categories` (`categoryID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -160,12 +160,12 @@ DROP TABLE IF EXISTS `QuestRequirements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `QuestRequirements` (
-  `questID` int(11) NOT NULL,
+  `questID` int(11),
   `characterID` int(11) NOT NULL,
   PRIMARY KEY (`questID`,`characterID`),
   KEY `characterID` (`characterID`),
-  CONSTRAINT `QuestRequirements_ibfk_1` FOREIGN KEY (`questID`) REFERENCES `Quests` (`questID`),
-  CONSTRAINT `QuestRequirements_ibfk_2` FOREIGN KEY (`characterID`) REFERENCES `Characters` (`characterID`)
+  CONSTRAINT `QuestRequirements_ibfk_1` FOREIGN KEY (`questID`) REFERENCES `Quests` (`questID`) ON DELETE CASCADE,
+  CONSTRAINT `QuestRequirements_ibfk_2` FOREIGN KEY (`characterID`) REFERENCES `Characters` (`characterID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -219,8 +219,8 @@ CREATE TABLE `SkillCategories` (
   `categoryID` int(11) NOT NULL,
   PRIMARY KEY (`skillID`,`categoryID`),
   KEY `categoryID` (`categoryID`),
-  CONSTRAINT `SkillCategories_ibfk_1` FOREIGN KEY (`skillID`) REFERENCES `Skills` (`skillID`),
-  CONSTRAINT `SkillCategories_ibfk_2` FOREIGN KEY (`categoryID`) REFERENCES `Categories` (`categoryID`)
+  CONSTRAINT `SkillCategories_ibfk_1` FOREIGN KEY (`skillID`) REFERENCES `Skills` (`skillID`) ON DELETE CASCADE,
+  CONSTRAINT `SkillCategories_ibfk_2` FOREIGN KEY (`categoryID`) REFERENCES `Categories` (`categoryID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

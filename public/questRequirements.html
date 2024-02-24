@@ -2,52 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Characters</title>
+    <title>Character Skills</title>
     <link rel="stylesheet" href="/css/styles.css">
 
     <script>
         // Function for fetching and searching character data from the server
-        function fetchCharacters(filter = '') { // Utilizing specifically the content typed into the search bar
-            fetch('/api/characters')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+        function fetchQuestRequirements(filter = '') { // Utilizing specifically the content typed into the search bar
+            fetch('/api/QuestRequirements')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())      // await response to catch errors
-                .then(characters => {
-                    const filteredCharacters = characters.filter(character => 
-                        character.name.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
+                .then(QuestRequirements => {
+                    // const filteredQuestRequirements = QuestRequirements.filter(QuestRequirement => 
+                    // QuestRequirement.characterId == filter); // Ensuring input is processed as lowercase to find a match
 
                     const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
                     container.innerHTML = '';       // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
-                    filteredCharacters.forEach(character => {
-                        const characterElement = document.createElement('div'); // Creating a new div for each character (ensuring spacing)
+                    // filteredQuestRequirements.
+                    QuestRequirements.forEach(QuestRequirement => {
+                        const QuestRequirementsElement = document.createElement('div'); // Creating a new div for each character (ensuring spacing)
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
-                        characterElement.innerHTML = `<h2>${character.name}</h2>
-                                                    <p>Description: ${character.characterDescription || 'N/A'}</p>
-                                                    <p>Health: ${character.health}</p>
-                                                    <p>Dexterity: ${character.dexterity}</p>
-                                                    <p>Defense: ${character.defense || 'N/A'}</p>
-                                                    <p>Attack: ${character.attack || 'N/A'}</p>`;
-                        
+                        QuestRequirementsElement.innerHTML = `<h2>Quest: ${QuestRequirement.questID}</h2>
+                                                            <h2>Character: ${QuestRequirement.characterID}</h2>`;
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
                         editButton.onclick = function() {
-                        toggleEditMode(characterElement, character);
+                        toggleEditMode(QuestRequirementsElement, QuestRequirement);
                         };
-                        characterElement.appendChild(editButton);
+                        QuestRequirementsElement.appendChild(editButton);
 
-                        container.appendChild(characterElement); // Append new child div to container on succesful creation
+                        container.appendChild(QuestRequirementsElement); // Append new child div to container on succesful creation
                     });
                 });
         }
         
-        function toggleEditMode(characterElement, quest) {
+        function toggleEditMode(QuestRequirementsElement, QuestRequirement) {
         // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
-            if (characterElement.querySelector('input')) {
-                characterElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
-                characterElement.querySelector('button').textContent = 'Edit';     // Reset back to edit if the current edit session is cancelled.
+            if (QuestRequirementsElement.querySelector('input')) {
+                QuestRequirementsElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
+                QuestRequirementsElement.querySelector('button').textContent = 'Edit';     // Reset back to edit if the current edit session is cancelled.
             } else {
 
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
-                const fields = ['name', 'characterDescription', 'health', 'dexterity', 'defense', 'attack'];
+                const fields = ['characterID', 'skillID'];
                 fields.forEach(field => {
                     const div = document.createElement('div');
                     div.className = 'editSection';
@@ -55,7 +51,7 @@
                     // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
                     const editInput = document.createElement('input');
                     editInput.type = 'text';
-                    editInput.value = quest[field];
+                    editInput.value = QuestRequirement[field];
                     div.appendChild(editInput);
 
                     // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
@@ -79,24 +75,24 @@
                     insertButton.textContent = 'Insert';
                     div.appendChild(insertButton);
 
-                    characterElement.appendChild(div);
+                    QuestRequirementsElement.appendChild(div);
                 });
                 
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
-                characterElement.querySelector('button').textContent = 'Cancel';
+                QuestRequirementsElement.querySelector('button').textContent = 'Cancel';
             }
         }
 
         // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
         document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('search');
-            searchInput.addEventListener('input', () => {
-                const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
-                fetchCharacters(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
-        });
+            // const searchInput = document.getElementById('search');
+            // searchInput.addEventListener('input', () => {
+            //     const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
+            //     fetchQuestRequirements(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
+            // });
         
             // Initial fetch of characters without filter (ensures all display on initial page load)
-            fetchCharacters();
+            fetchQuestRequirements();
         });
 
     </script>
@@ -117,8 +113,8 @@
         </nav>
     </header>
 
-    <h1 id="page-title">Characters</h1>
-    <input type="text" id="search" placeholder="Search characters">
+    <h1 id="page-title">Quest Requirements</h1>
+    <!-- <input type="text" id="search" placeholder="Search items"> -->
 
     <div id="container">
         <!-- Characters will be added here by the script -->

@@ -1,19 +1,47 @@
 -- SELECT STATEMENTS --
 
 -- Select statement for Categories
-SELECT * FROM Categories;
+SELECT category, categoryDescription AS "Description" FROM Categories;
 
 -- Select statement for Characters
-SELECT * FROM Characters;
+SELECT name, characterDescription AS "Description", health, dexterity, defense, attack FROM Characters;
 
 -- Select statement for Items
-SELECT * FROM Items;
+SELECT name, itemDescription AS "Description", levelRequired AS "Level Required" FROM Items;
 
 -- Select statement for Quests
-SELECT * FROM Quests;
+SELECT questTitle AS "Title", questDescription AS "Description", questLocation AS "Location", questStatus AS "Status", levelRequired AS "Level Required" FROM Quests;
 
 -- Select statement for Skills
-SELECT * FROM Skills;
+SELECT skillName AS "Name", skillDescription AS "Description", skillEffect AS "Effect", levelRequired AS "Level Required" FROM Skills;
+
+-- Select statement for CharacterSkills
+SELECT * FROM CharacterSkills;
+
+-- Select statement for ItemCategories
+SELECT * FROM ItemCategories;
+
+-- Select statement for QuestRequirements
+SELECT * FROM QuestRequirements;
+
+-- Select statement for SkillCategories
+SELECT * FROM SkillCategories;
+
+-- Select statement for list of Categories
+SELECT category FROM Categories;
+
+-- Select statement  for list of Characters
+SELECT name FROM Characters;
+
+-- Select statement for list of Items
+SELECT name FROM Items;
+
+-- Select statement for list of Quests
+SELECT questTitle FROM Quests;
+
+-- Select statement for list of Skills
+SELECT skillName FROM Skills;
+
 
 -- INSERT STATEMENTS --
 

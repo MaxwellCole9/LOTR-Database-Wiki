@@ -112,3 +112,34 @@ header nav a {
 #container div {
     margin-bottom: 2.5%;
 }
+
+#container button {
+    background-color: #488B49;
+    color: #DAE2DF;
+    border-radius: 5px;
+    border: none;
+    width: fit-content;
+    padding: 0.5% 1% 0.5% 1%;
+    margin: 1% 0% 1% 1%;
+}
+
+
+#editField {
+    display: flex;
+    flex-direction: row;
+}
+
+.editSection {
+    display: flex;
+    flex-direction: row;
+    margin-right: 5%;
+}
+
+.editSection input {
+    background-color: #DAE2DF;
+    border-radius: 5px;
+    border: none;
+    width: fit-content;
+    margin-left: 5%;
+    padding: 1% 1% 1% 1%;
+}

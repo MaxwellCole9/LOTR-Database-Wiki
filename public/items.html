@@ -21,9 +21,65 @@
                         itemElement.innerHTML = `<h2>${item.name}</h2>
                                                 <p>Description: ${item.itemDescription}</p>
                                                 <p>Level Required: ${item.levelRequired}</p>`;
+                        // Appending edit functionality to the bottom of each div
+                        const editButton = document.createElement('button');
+                        editButton.textContent = 'Edit';
+                        editButton.onclick = function() {
+                        toggleEditMode(itemElement, item);
+                        };
+                        itemElement.appendChild(editButton);
+
                         container.appendChild(itemElement); // Append new child div to container on successful creation
                     });
                 });
+        }
+
+        function toggleEditMode(itemElement, quest) {
+        // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
+            if (itemElement.querySelector('input')) {
+                itemElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
+                itemElement.querySelector('button').textContent = 'Edit';     // Reset back to edit if the current edit session is cancelled.
+            } else {
+
+                // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
+                const fields = ['name', 'itemDescription', 'levelRequired'];
+                fields.forEach(field => {
+                    const div = document.createElement('div');
+                    div.className = 'editSection';
+
+                    // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
+                    const editInput = document.createElement('input');
+                    editInput.type = 'text';
+                    editInput.value = quest[field];
+                    div.appendChild(editInput);
+
+                    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    div.appendChild(deleteButton);
+
+                    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                    const completeEditButton = document.createElement('button');
+                    completeEditButton.textContent = 'Edit';
+                    div.appendChild(completeEditButton);
+
+                    // creating input fields for new inserts to the entity.
+                    const insertInput = document.createElement('input');
+                    insertInput.type = 'text';
+                    insertInput.placeholder = 'New Insert';
+                    div.appendChild(insertInput);
+
+                    //creating an insert button for the insert field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                    const insertButton = document.createElement('button');
+                    insertButton.textContent = 'Insert';
+                    div.appendChild(insertButton);
+
+                    itemElement.appendChild(div);
+                });
+                
+                // Changing button text to Cancel after initial press to indicate user can cancel edit
+                itemElement.querySelector('button').textContent = 'Cancel';
+            }
         }
 
         // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters

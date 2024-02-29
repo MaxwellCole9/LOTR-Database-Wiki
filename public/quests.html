@@ -65,6 +65,11 @@
 
                 questElement.querySelectorAll('.deleteForm ').forEach(e => e.hidden = true); // Ensures delete form is hidden
 
+                // Citation for form function usage
+                // Date: 2/29/2024
+                // Adapted from usage found on w3schools website, with
+                //  regards to attributes and actions.
+                // Source URL: https://www.w3schools.com/tags/tag_form.asp
                 const form = document.createElement('form');
                 form.id = quest.questID // Set form ID as questID)
                 form.action = '/api/updateQuest';

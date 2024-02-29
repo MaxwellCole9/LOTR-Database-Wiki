@@ -6,6 +6,13 @@ var db = require('./db-connector');
 var bodyParser = require('body-parser');
 
 app.use(express.static('public'));
+
+/*
+    Citation for the following function and use of body-parser
+    Date: 2/29/2024
+    Copied from a medium article on processing post data in node.js
+    Source URL: https://medium.com/swlh/read-html-form-data-using-get-and-post-method-in-node-js-8d2c7880adbf
+*/
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/api/Characters', function(req, res) {

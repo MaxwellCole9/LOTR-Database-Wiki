@@ -100,6 +100,26 @@ header nav a {
     border: none;
 }
 
+#addQuestContainer button {
+    background-color: #488B49;
+    color: #DAE2DF;
+    border-radius: 5px;
+    width: fit-content;
+    padding: 1% 1% 1% 1%;
+    margin-bottom: 2.5%;
+    border: none;
+}
+
+#addQuestContainer input {
+    background-color: #C6D2CE;
+    color: #0A0A0A;
+    border-radius: 5px;
+    width: fit-content;
+    padding: 1% 1% 1% 1%;
+    margin-bottom: 2.5%;
+    border: none;
+}
+
 
 #container {
     font-size: 1.2em;

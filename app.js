@@ -73,9 +73,41 @@ app.get('/api/Quests', function(req, res) {
     });
 });
 
+app.post('/api/addQuest', function(req, res) {
+    let params = req.body
+    const query = `INSERT INTO Quests (questTitle, questDescription, questLocation, questStatus, levelRequired) VALUES ("${params.questTitle}", "${params.questDescription}", "${params.questLocation}", ${params.questStatus}, ${params.levelRequired});`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating quests: ', err);
+            res.status(500).send('Error updating quests');
+            return;
+        }
+        res.redirect('/quests.html')
+    });
+});
+
 app.post('/api/updateQuest', function(req, res) {
     let params = req.body
     const query = `UPDATE Quests SET questTitle = "${params.questTitle}", questDescription = "${params.questDescription}", questLocation = "${params.questLocation}", questStatus = ${params.questStatus}, levelRequired = ${params.levelRequired} WHERE questID = ${params.questID};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating quests: ', err);
+            res.status(500).send('Error updating quests');
+            return;
+        }
+        // res.json(results);
+        res.redirect('/quests.html')
+    });
+});
+
+app.post('/api/deleteQuest', function(req, res) {
+    let params = req.body
+    console.log(params);
+    const query = `DELETE FROM Quests WHERE questID = ${params.questID};`;
     console.log(query);
 
     db.pool.query(query, function(err, results) {

@@ -20,8 +20,8 @@
                     QuestRequirements.forEach(QuestRequirement => {
                         const QuestRequirementsElement = document.createElement('div'); // Creating a new div for each character (ensuring spacing)
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
-                        QuestRequirementsElement.innerHTML = `<h2>Quest: ${QuestRequirement.questID}</h2>
-                                                            <h2>Character: ${QuestRequirement.characterID}</h2>`;
+                        QuestRequirementsElement.innerHTML = `<h2>Quest: ${QuestRequirement.questTitle}</h2>
+                                                            <h2>Character: ${QuestRequirement.name}</h2>`;
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
@@ -43,7 +43,7 @@
             } else {
 
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
-                const fields = ['characterID', 'skillID'];
+                const fields = ['questTitle', 'name'];
                 fields.forEach(field => {
                     const div = document.createElement('div');
                     div.className = 'editSection';

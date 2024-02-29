@@ -20,8 +20,8 @@
                     ItemCategories.forEach(ItemCategory => {
                         const ItemCategoriesElement = document.createElement('div'); // Creating a new div for each character (ensuring spacing)
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
-                        ItemCategoriesElement.innerHTML = `<h2>Item: ${ItemCategory.itemID}</h2>
-                                                            <h2>Category: ${ItemCategory.categoryID}</h2>`;
+                        ItemCategoriesElement.innerHTML = `<h2>Item: ${ItemCategory.name}</h2>
+                                                            <h2>Category: ${ItemCategory.category}</h2>`;
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
@@ -43,7 +43,7 @@
             } else {
 
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
-                const fields = ['itemID', 'categoryID'];
+                const fields = ['name', 'category'];
                 fields.forEach(field => {
                     const div = document.createElement('div');
                     div.className = 'editSection';

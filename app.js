@@ -3,8 +3,10 @@ var app = express();
 const PORT = 5625;
 
 var db = require('./db-connector');
+var bodyParser = require('body-parser');
 
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/api/Characters', function(req, res) {
     const query = 'SELECT * FROM Characters;';
@@ -71,21 +73,23 @@ app.get('/api/Quests', function(req, res) {
     });
 });
 
-app.get('/api/CharacterSkills', function(req, res) {
-    const query = 'SELECT * FROM CharacterSkills;';
+app.post('/api/updateQuest', function(req, res) {
+    let params = req.body
+    const query = `UPDATE Quests SET questTitle = "${params.questTitle}", questDescription = "${params.questDescription}", questLocation = "${params.questLocation}", questStatus = ${params.questStatus}, levelRequired = ${params.levelRequired} WHERE questID = ${params.questID};`;
+    console.log(query);
 
     db.pool.query(query, function(err, results) {
         if (err) {
-            console.error('Error fetching characters: ', err);
-            res.status(500).send('Error fetching characters');
+            console.error('Error updating quests: ', err);
+            res.status(500).send('Error updating quests');
             return;
         }
-        res.json(results);
+        res.redirect('/quests.html');
     });
 });
 
 app.get('/api/CharacterSkills', function(req, res) {
-    const query = 'SELECT * FROM CharacterSkills;';
+    const query = 'SELECT * FROM CharacterSkills JOIN Characters ON CharacterSkills.characterID = Characters.characterID JOIN Skills ON CharacterSkills.skillID = Skills.skillID;';
 
     db.pool.query(query, function(err, results) {
         if (err) {
@@ -98,7 +102,7 @@ app.get('/api/CharacterSkills', function(req, res) {
 });
 
 app.get('/api/ItemCategories', function(req, res) {
-    const query = 'SELECT * FROM ItemCategories;';
+    const query = 'SELECT * FROM ItemCategories JOIN Items on ItemCategories.itemID = Items.itemID JOIN Categories ON ItemCategories.categoryID = Categories.categoryID;';
 
     db.pool.query(query, function(err, results) {
         if (err) {
@@ -111,7 +115,7 @@ app.get('/api/ItemCategories', function(req, res) {
 });
 
 app.get('/api/QuestRequirements', function(req, res) {
-    const query = 'SELECT * FROM QuestRequirements;';
+    const query = 'SELECT * FROM QuestRequirements JOIN Quests ON QuestRequirements.questID = Quests.questID JOIN Characters ON QuestRequirements.characterID = Characters.characterID;';
 
     db.pool.query(query, function(err, results) {
         if (err) {
@@ -124,7 +128,7 @@ app.get('/api/QuestRequirements', function(req, res) {
 });
 
 app.get('/api/SkillCategories', function(req, res) {
-    const query = 'SELECT * FROM SkillCategories;';
+    const query = 'SELECT * FROM SkillCategories JOIN Skills on SkillCategories.skillID = Skills.skillID JOIN Categories ON SkillCategories.categoryID = Categories.categoryID;';
 
     db.pool.query(query, function(err, results) {
         if (err) {

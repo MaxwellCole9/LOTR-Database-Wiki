@@ -16,6 +16,7 @@
                     container.innerHTML = '';       // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
                     filteredQuests.forEach(quest => {
                         const questElement = document.createElement('div'); // Creating a new div for each quest (ensuring spacing)
+                        questElement.id = quest.questTitle // Set title as quest ID
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         questElement.innerHTML = `<h2>${quest.questTitle}</h2>
                                                 <p>Description: ${quest.questDescription}</p>
@@ -43,6 +44,20 @@
                 questElement.querySelector('button').textContent = 'Edit';     // Reset back to edit if the current edit session is cancelled.
             } else {
 
+                const form = document.createElement('form');
+                form.id = quest.questID // Set form ID as questID)
+                form.action = '/api/updateQuest';
+                form.method = 'POST';
+
+                // Create Quest ID hidden element for processing
+                const questIDInput = document.createElement('input');
+                questIDInput.type = 'text';
+                questIDInput.name = "questID";
+                questIDInput.id = "questID";
+                questIDInput.value = quest["questID"];
+                questIDInput.hidden = true;
+                form.appendChild(questIDInput);
+
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['questTitle', 'questDescription', 'questLocation', 'questStatus', 'levelRequired'];
                 fields.forEach(field => {
@@ -52,38 +67,65 @@
                     // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
                     const editInput = document.createElement('input');
                     editInput.type = 'text';
+                    editInput.name = field;
+                    editInput.id = field;
                     editInput.value = quest[field];
                     div.appendChild(editInput);
 
-                    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
-                    div.appendChild(deleteButton);
 
-                    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const completeEditButton = document.createElement('button');
-                    completeEditButton.textContent = 'Edit';
-                    div.appendChild(completeEditButton);
 
-                    // creating input fields for new inserts to the entity.
-                    const insertInput = document.createElement('input');
-                    insertInput.type = 'text';
-                    insertInput.placeholder = 'New Insert';
-                    div.appendChild(insertInput);
+                    // // creating input fields for new inserts to the entity.
+                    // const insertInput = document.createElement('input');
+                    // insertInput.type = 'text';
+                    // insertInput.placeholder = 'New Insert';
+                    // div.appendChild(insertInput);
 
-                    //creating an insert button for the insert field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const insertButton = document.createElement('button');
-                    insertButton.textContent = 'Insert';
-                    div.appendChild(insertButton);
+                    // //creating an insert button for the insert field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                    // const insertButton = document.createElement('button');
+                    // insertButton.textContent = 'Insert';
+                    // div.appendChild(insertButton);
 
-                    questElement.appendChild(div);
+                    form.appendChild(div);
                 });
+
+                const div = document.createElement('div');
+                div.className = 'editSection';
+                // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                // deleteButton.onclick(
+                //     fetch('/api/updateQuests', {
+                //         method: "POST",
+                //         body: {
+                //             questTitle: quest[questTitle], 
+                //             questDescription: quest[questDescription],
+                //             questLocation: quest[questLocation], 
+                //             questStatus: quest[questStatus],
+                //             levelRequired: quest[levelRequired],
+                //             questID: quest[questID]
+                //         }
+                //     })
+                // );
+                div.appendChild(deleteButton);
+
+                // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                const completeEditButton = document.createElement('button');
+                completeEditButton.type = 'submit';
+                completeEditButton.textContent = 'update';
+                // completeEditButton.type('button')
+                // console.log(quest);
+                div.appendChild(completeEditButton);
+
+                form.appendChild(div);
+                questElement.appendChild(form);
+
+                // form.appendChild(questElement);
                 
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 questElement.querySelector('button').textContent = 'Cancel';
+
             }
         }
-
 
         // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
         document.addEventListener('DOMContentLoaded', () => {

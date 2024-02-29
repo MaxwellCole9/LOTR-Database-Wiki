@@ -20,8 +20,8 @@
                     characterSkills.forEach(characterSkill => {
                         const characterSkillsElement = document.createElement('div'); // Creating a new div for each character (ensuring spacing)
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
-                        characterSkillsElement.innerHTML = `<h2>Character: ${characterSkill.characterID}</h2>
-                                                            <h2>Skill: ${characterSkill.skillID}</h2>`;
+                        characterSkillsElement.innerHTML = `<h2>Character: ${characterSkill.name}</h2>
+                                                            <h2>Skill: ${characterSkill.skillName}</h2>`;
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
@@ -43,7 +43,7 @@
             } else {
 
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
-                const fields = ['characterID', 'skillID'];
+                const fields = ['name', 'skillName'];
                 fields.forEach(field => {
                     const div = document.createElement('div');
                     div.className = 'editSection';

@@ -72,19 +72,6 @@
                     editInput.value = quest[field];
                     div.appendChild(editInput);
 
-
-
-                    // // creating input fields for new inserts to the entity.
-                    // const insertInput = document.createElement('input');
-                    // insertInput.type = 'text';
-                    // insertInput.placeholder = 'New Insert';
-                    // div.appendChild(insertInput);
-
-                    // //creating an insert button for the insert field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    // const insertButton = document.createElement('button');
-                    // insertButton.textContent = 'Insert';
-                    // div.appendChild(insertButton);
-
                     form.appendChild(div);
                 });
 
@@ -110,10 +97,13 @@
 
                 // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
                 const completeEditButton = document.createElement('button');
-                completeEditButton.type = 'submit';
                 completeEditButton.textContent = 'update';
-                // completeEditButton.type('button')
+                completeEditButton.type = 'submit'
                 // console.log(quest);
+                // completeEditButton.onclick = function() {
+                //     updateQuest(quest)
+                // }
+
                 div.appendChild(completeEditButton);
 
                 form.appendChild(div);
@@ -127,13 +117,32 @@
             }
         }
 
+        // function updateQuest(quest) {
+        //     console.log("Updating Quest:");
+        //             fetch('/api/updateQuest', {
+        //                 method: 'POST',
+        //                 // body: {
+        //                 //     questID: form.getElementById("questID"),
+        //                 //     questTitle: form.getElementById("questTitle"), 
+        //                 //     questDescription: form.getElementById("questDescription"),
+        //                 //     questLocation: form.getElementById("questLocation"), 
+        //                 //     questStatus: form.getElementById("questStatus"),
+        //                 //     levelRequired: form.getElementById("levelRequired")
+        //                 // }
+        //             });
+        //             console.log("Quest updated...")
+        //                 // .then(response => response.json())
+        //                 // .then(response => fetchQuests())
+
+        // }
+
         // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('search');
             searchInput.addEventListener('input', () => {
                 const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
                 fetchQuests(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
-        });
+            });
         
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchQuests();

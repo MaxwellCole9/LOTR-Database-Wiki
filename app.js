@@ -84,7 +84,8 @@ app.post('/api/updateQuest', function(req, res) {
             res.status(500).send('Error updating quests');
             return;
         }
-        res.redirect('/quests.html');
+        // res.json(results);
+        res.redirect('/quests.html')
     });
 });
 

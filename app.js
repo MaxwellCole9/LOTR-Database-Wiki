@@ -54,6 +54,54 @@ app.get('/api/Items', function(req, res) {
     });
 });
 
+app.post('/api/addItem', function(req, res) {
+    let params = req.body
+    const query = `INSERT INTO Items (name, itemDescription, levelRequired) VALUES ("${params.name}", "${params.itemDescription}", ${params.levelRequired});`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating quests: ', err);
+            res.status(500).send('Error updating quests');
+            return;
+        }
+        res.redirect('/items.html')
+    });
+});
+
+app.post('/api/updateItem', function(req, res) {
+    let params = req.body
+    const query = `UPDATE Items SET name = "${params.name}", itemDescription = "${params.itemDescription}", levelRequired = ${params.levelRequired} WHERE itemID = ${params.itemID};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating quests: ', err);
+            res.status(500).send('Error updating quests');
+            return;
+        }
+        // res.json(results);
+        res.redirect('/items.html')
+    });
+});
+
+app.post('/api/deleteItem', function(req, res) {
+    let params = req.body
+    console.log(params);
+    const query = `DELETE FROM Items WHERE itemID = ${params.itemID};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating quests: ', err);
+            res.status(500).send('Error updating quests');
+            return;
+        }
+        // res.json(results);
+        res.redirect('/items.html')
+    });
+});
+
 app.get('/api/Categories', function(req, res) {
     const query = 'SELECT * FROM Categories;';
 

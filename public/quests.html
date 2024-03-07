@@ -87,12 +87,19 @@
 
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['questTitle', 'questDescription', 'questLocation', 'questStatus', 'levelRequired'];
+                const fieldNames = {
+                    'questTitle': 'Title', 
+                    'questDescription': 'Description',
+                    'questLocation': 'Location',
+                    'questStatus': 'Status',
+                    'levelRequired': 'Level Required' 
+                }
                 fields.forEach(field => {
                     const div = document.createElement('div');
                     div.className = 'editSection';
 
                     // creating input labels for current types in the entity. this reads in the label to display to the user.
-                    div.innerHTML = `<p>${field}:</p>`
+                    div.innerHTML = `<p>${fieldNames[field]}: </p>`
 
                     // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
                     const editInput = document.createElement('input');
@@ -112,17 +119,11 @@
                 const completeEditButton = document.createElement('button');
                 completeEditButton.textContent = 'Update';
                 completeEditButton.type = 'submit'
-                // console.log(quest);
-                // completeEditButton.onclick = function() {
-                //     updateQuest(quest)
-                // }
 
                 div.appendChild(completeEditButton);
 
                 form.appendChild(div);
                 questElement.appendChild(form);
-
-                // form.appendChild(questElement);
                 
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 questElement.querySelector('button').textContent = 'Cancel';
@@ -131,7 +132,7 @@
         }
 
         function toggleAddFunction() {
-            addQuestElement = document.getElementById('addQuestContainer');
+            addQuestElement = document.getElementById('addContainer');
 
             if (addQuestElement.querySelector('input')) {
                 addQuestElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
@@ -146,12 +147,19 @@
 
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['questTitle', 'questDescription', 'questLocation', 'questStatus', 'levelRequired'];
+                const fieldNames = {
+                    'questTitle': 'Title', 
+                    'questDescription': 'Description',
+                    'questLocation': 'Location',
+                    'questStatus': 'Status',
+                    'levelRequired': 'Level Required' 
+                }
                 fields.forEach(field => {
                     const div = document.createElement('div');
                     div.className = 'editSection';
 
                     // creating input labels for current types in the entity. this reads in the label to display to the user.
-                    div.innerHTML = `<p>${field}:</p>`
+                    div.innerHTML = `<p>${fieldNames[field]}:</p>`
 
                     // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
                     const editInput = document.createElement('input');
@@ -216,7 +224,7 @@
 
     <h1 id="page-title">Quests</h1>
 
-    <div id="addQuestContainer">
+    <div id="addContainer">
         <button type="button" id="addQuest" onclick=toggleAddFunction()>Add New Quest</button>
         <!-- Quest Form will be added here by the script -->
     </div>

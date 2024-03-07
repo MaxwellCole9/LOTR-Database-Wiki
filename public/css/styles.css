@@ -100,7 +100,7 @@ header nav a {
     border: none;
 }
 
-#addQuestContainer button {
+#addContainer button {
     background-color: #488B49;
     color: #DAE2DF;
     border-radius: 5px;
@@ -110,7 +110,7 @@ header nav a {
     border: none;
 }
 
-#addQuestContainer input {
+#addContainer input {
     background-color: #C6D2CE;
     color: #0A0A0A;
     border-radius: 5px;

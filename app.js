@@ -28,6 +28,54 @@ app.get('/api/Characters', function(req, res) {
     });
 });
 
+app.post('/api/addCharacter', function(req, res) {
+    let params = req.body
+    const query = `INSERT INTO Characters (name, characterDescription, health, dexterity, defense, attack) VALUES ("${params.name}", "${params.characterDescription}", ${params.health}, ${params.dexterity}, ${params.defense}, ${params.attack});`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating quests: ', err);
+            res.status(500).send('Error updating quests');
+            return;
+        }
+        res.redirect('/characters.html')
+    });
+});
+
+app.post('/api/updateCharacter', function(req, res) {
+    let params = req.body
+    const query = `UPDATE Characters SET name = "${params.name}", characterDescription = "${params.characterDescription}", health = ${params.health}, dexterity = ${params.dexterity}, defense = ${params.defense}, health = ${params.attack} WHERE characterID = ${params.characterID};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating quests: ', err);
+            res.status(500).send('Error updating quests');
+            return;
+        }
+        // res.json(results);
+        res.redirect('/characters.html')
+    });
+});
+
+app.post('/api/deleteCharacter', function(req, res) {
+    let params = req.body
+    console.log(params);
+    const query = `DELETE FROM Characters WHERE characterID = ${params.characterID};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating quests: ', err);
+            res.status(500).send('Error updating quests');
+            return;
+        }
+        // res.json(results);
+        res.redirect('/characters.html')
+    });
+});
+
 app.get('/api/Skills', function(req, res) {
     const query = 'SELECT * FROM Skills;';
 

@@ -8,39 +8,79 @@
     <script>
         // Function for fetching and searching character data from the server
         function fetchCategories(filter = '') { // Utilizing specifically the content typed into the search bar
-            fetch('/api/categories')             // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
-                .then(response => response.json())       // await response to catch errors
+            fetch('/api/categories')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+                .then(response => response.json())      // await response to catch errors
                 .then(categories => {
                     const filteredCategories = categories.filter(category => 
                         category.category.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
-                    
-                    const container = document.getElementById('container');            // Finding document 'container' placeholder to be filled with data
-                    container.innerHTML = '';        // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
+                    const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
+                    container.innerHTML = '';       // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
                     filteredCategories.forEach(category => {
-                        const categoryElement = document.createElement('div'); // Creating a new div for each category (ensuring spacing)
+                        const categoryElement = document.createElement('div'); // Creating a new div for each quest (ensuring spacing)
+                        categoryElement.id = category.category // Set title as category ID
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         categoryElement.innerHTML = `<h2>${category.category}</h2>
-                                                    <p>Description: ${category.categoryDescription}</p>`;
+                                                <p>Description: ${category.categoryDescription}</p>`;
 
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
                         editButton.onclick = function() {
-                        toggleEditMode(categoryElement, category);
+                            toggleEditMode(categoryElement, category);
                         };
                         categoryElement.appendChild(editButton);
+
+                        // Create form for delete button
+                        const form = document.createElement('form');
+                        form.id = "Delete_" + category.categoryID // Set form ID as questID)
+                        form.action = '/api/deleteCategory';
+                        form.method = 'POST';
+                        form.className = 'deleteForm';
+
+                        // Appending delete functionality to the bottom of each div
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.type = 'submit';
+                        deleteButton.value = category.categoryID;
+                        deleteButton.name = 'categoryID';
+                        form.appendChild(deleteButton);
+                        categoryElement.appendChild(form);
 
                         container.appendChild(categoryElement); // Append new child div to container on successful creation
                     });
                 });
         }
-        
-        function toggleEditMode(categoryElement, quest) {
+
+        function toggleEditMode(categoryElement, category) {
         // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
             if (categoryElement.querySelector('input')) {
                 categoryElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
+                categoryElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress 
                 categoryElement.querySelector('button').textContent = 'Edit';     // Reset back to edit if the current edit session is cancelled.
+                categoryElement.querySelectorAll('.deleteForm ').forEach(e => e.hidden = false); // Ensures delete form can now be seen
             } else {
+
+                categoryElement.querySelectorAll('.deleteForm ').forEach(e => e.hidden = true); // Ensures delete form is hidden
+
+                // Citation for form function usage
+                // Date: 2/29/2024
+                // Adapted from usage found on w3schools website, with
+                //  regards to attributes and actions.
+                // Source URL: https://www.w3schools.com/tags/tag_form.asp
+                const form = document.createElement('form');
+                form.id = category.categoryID // Set form ID as questID)
+                form.action = '/api/updateCategory';
+                form.method = 'POST';
+                form.className = 'form';
+
+                // Create Category ID hidden element for processing
+                const categoryIDInput = document.createElement('input');
+                categoryIDInput.type = 'text';
+                categoryIDInput.name = "categoryID";
+                categoryIDInput.id = "categoryID";
+                categoryIDInput.value = category["categoryID"];
+                categoryIDInput.hidden = true;
+                form.appendChild(categoryIDInput);
 
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['category', 'categoryDescription'];
@@ -48,40 +88,98 @@
                     const div = document.createElement('div');
                     div.className = 'editSection';
 
+                    // creating input labels for current types in the entity. this reads in the label to display to the user.
+                    div.innerHTML = `<p>${field}:</p>`
+
                     // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
                     const editInput = document.createElement('input');
                     editInput.type = 'text';
-                    editInput.value = quest[field];
+                    editInput.name = field;
+                    editInput.id = field;
+                    editInput.value = category[field];
                     div.appendChild(editInput);
 
-                    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
-                    div.appendChild(deleteButton);
-
-                    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const completeEditButton = document.createElement('button');
-                    completeEditButton.textContent = 'Edit';
-                    div.appendChild(completeEditButton);
-
-                    // creating input fields for new inserts to the entity.
-                    const insertInput = document.createElement('input');
-                    insertInput.type = 'text';
-                    insertInput.placeholder = 'New Insert';
-                    div.appendChild(insertInput);
-
-                    //creating an insert button for the insert field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const insertButton = document.createElement('button');
-                    insertButton.textContent = 'Insert';
-                    div.appendChild(insertButton);
-
-                    categoryElement.appendChild(div);
+                    form.appendChild(div);
                 });
+
+                const div = document.createElement('div');
+                div.className = 'editSection';
+
+                // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                const completeEditButton = document.createElement('button');
+                completeEditButton.textContent = 'Update';
+                completeEditButton.type = 'submit'
+                // console.log(quest);
+                // completeEditButton.onclick = function() {
+                //     updateQuest(quest)
+                // }
+
+                div.appendChild(completeEditButton);
+
+                form.appendChild(div);
+                categoryElement.appendChild(form);
+
+                // form.appendChild(questElement);
                 
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 categoryElement.querySelector('button').textContent = 'Cancel';
+
             }
         }
+
+        function toggleAddFunction() {
+            addCategoryElement = document.getElementById('addQuestContainer');
+
+            if (addCategoryElement.querySelector('input')) {
+                addCategoryElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
+                addCategoryElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress 
+                addCategoryElement.querySelector('button').textContent = 'Add New Category';     // Reset back to edit if the current edit session is cancelled.
+            } else {
+                const form = document.createElement('form');
+                form.id = "addCategory" // Set form ID as questID)
+                form.action = '/api/addCategory';
+                form.method = 'POST';
+                form.className = 'form';
+
+                // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
+                const fields = ['category', 'categoryDescription'];
+                fields.forEach(field => {
+                    const div = document.createElement('div');
+                    div.className = 'editSection';
+
+                    // creating input labels for current types in the entity. this reads in the label to display to the user.
+                    div.innerHTML = `<p>${field}:</p>`
+
+                    // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
+                    const editInput = document.createElement('input');
+                    editInput.type = 'text';
+                    editInput.name = field;
+                    editInput.id = field;
+                    div.appendChild(editInput);
+
+                    form.appendChild(div);
+                });
+
+                const div = document.createElement('div');
+                div.className = 'editSection';
+
+                // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                const completeEditButton = document.createElement('button');
+                completeEditButton.textContent = 'Add';
+                completeEditButton.type = 'submit'
+
+                div.appendChild(completeEditButton);
+
+                form.appendChild(div);
+                addCategoryElement.appendChild(form);
+
+                // form.appendChild(questElement);
+                
+                // Changing button text to Cancel after initial press to indicate user can cancel edit
+                addCategoryElement.querySelector('button').textContent = 'Cancel';
+            }
+        }
+
 
         // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
         document.addEventListener('DOMContentLoaded', () => {
@@ -89,7 +187,7 @@
             searchInput.addEventListener('input', () => {
                 const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
                 fetchCategories(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
-        });
+            });
         
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchCategories();
@@ -115,6 +213,12 @@
     </header>
 
     <h1 id="page-title">Categories</h1>
+
+    <div id="addQuestContainer">
+        <button type="button" id="addCategory" onclick=toggleAddFunction()>Add New Category</button>
+        <!-- Quest Form will be added here by the script -->
+    </div>
+
     <input type="text" id="search" placeholder="Search categories">
 
     <div id="container">

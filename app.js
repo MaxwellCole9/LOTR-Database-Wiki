@@ -89,6 +89,54 @@ app.get('/api/Skills', function(req, res) {
     });
 });
 
+app.post('/api/addSkill', function(req, res) {
+    let params = req.body
+    const query = `INSERT INTO Skills (skillName, skillDescription, skillEffect, levelRequired) VALUES ("${params.skillName}", "${params.skillDescription}", "${params.skillEffect}", ${params.levelRequired});`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating skills: ', err);
+            res.status(500).send('Error updating skills');
+            return;
+        }
+        res.redirect('/skills.html')
+    });
+});
+
+app.post('/api/updateSkill', function(req, res) {
+    let params = req.body
+    const query = `UPDATE Skills SET skillName = "${params.skillName}", skillDescription = "${params.skillDescription}", skillEffect = "${params.skillEffect}", levelRequired = ${params.levelRequired};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating skills: ', err);
+            res.status(500).send('Error updating skills');
+            return;
+        }
+        // res.json(results);
+        res.redirect('/skills.html')
+    });
+});
+
+app.post('/api/deleteSkill', function(req, res) {
+    let params = req.body
+    console.log(params);
+    const query = `DELETE FROM Skills WHERE skillID = ${params.skillID};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating skills: ', err);
+            res.status(500).send('Error updating skills');
+            return;
+        }
+        // res.json(results);
+        res.redirect('/skills.html')
+    });
+});
+
 app.get('/api/Items', function(req, res) {
     const query = 'SELECT * FROM Items;';
 
@@ -160,6 +208,53 @@ app.get('/api/Categories', function(req, res) {
             return;
         }
         res.json(results);
+    });
+});
+
+app.post('/api/addCategory', function(req, res) {
+    let params = req.body;
+    const query = `INSERT INTO Categories (category, categoryDescription) VALUES ("${params.category}", "${params.categoryDescription}");`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error adding category: ', err);
+            res.status(500).send('Error adding category');
+            return;
+        }
+        res.redirect('/categories.html');
+    });
+});
+
+// Update an existing category
+app.post('/api/updateCategory', function(req, res) {
+    let params = req.body;
+    const query = `UPDATE Categories SET category = "${params.category}", categoryDescription = "${params.categoryDescription}" WHERE categoryID = ${params.categoryID};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error updating category: ', err);
+            res.status(500).send('Error updating category');
+            return;
+        }
+        res.redirect('/categories.html');
+    });
+});
+
+// Delete a category
+app.post('/api/deleteCategory', function(req, res) {
+    let params = req.body;
+    const query = `DELETE FROM Categories WHERE categoryID = ${params.categoryID};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error deleting category: ', err);
+            res.status(500).send('Error deleting category');
+            return;
+        }
+        res.redirect('/categories.html');
     });
 });
 

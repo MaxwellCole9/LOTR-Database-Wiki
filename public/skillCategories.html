@@ -209,6 +209,11 @@
             }
         }
 
+        // Citation for the dropdown functions below
+        // Date: 3/7/2024
+        // Adapted from usage found on this stack overflow post
+        //  with regards to creating a dropdown menu in javascript.
+        // Source: https://stackoverflow.com/questions/23718753/javascript-to-create-a-dropdown-list-and-get-the-selected-value
         function createSkillDropdown(element) {
             fetch('/api/SkillCategories')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())      // await response to catch errors

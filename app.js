@@ -276,6 +276,64 @@ app.get('/api/SkillCategories', function(req, res) {
     });
 });
 
+app.post('/api/addSkillCategory', function(req, res) {
+    let params = req.body;
+    console.log(params);
+    const query = `INSERT INTO SkillCategories (skillID, categoryID) VALUES (${params.skillID}, ${params.categoryID});`;
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+
+            // If entry is duplicate, refresh the page
+            if (err.sqlMessage.startsWith("Duplicate")) {
+                res.redirect('/skillCategories.html');
+                return;
+            }
+
+            console.error('Error fetching characters: ', err);
+            res.status(500).send('Error fetching characters');
+            return;
+        }
+        res.redirect('/skillCategories.html');
+    });
+});
+
+app.post('/api/updateSkillCategory', function(req, res) {
+    let params = req.body;
+    console.log(params);
+    const query = `UPDATE SkillCategories SET skillID = ${params.skillID} AND categoryID = ${params.categoryID} WHERE skillID = ${params.old_skillID} AND categoryID = ${params.old_categoryID};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error fetching characters: ', err);
+            res.status(500).send('Error fetching characters');
+            return;
+        }
+        res.redirect('/skillCategories.html');
+    });
+});
+
+app.post('/api/deleteSkillCategory', function(req, res) {
+    let params = req.body;
+    let paramIds = params.skillID_categoryID.split("_");
+    let skillID = Number(paramIds[0]);
+    let categoryID = Number(paramIds[1]);
+    console.log(skillID);
+    console.log(categoryID);
+    const query = `DELETE FROM SkillCategories WHERE skillID = ${skillID} AND categoryID = ${categoryID};`;
+    console.log(query);
+
+    db.pool.query(query, function(err, results) {
+        if (err) {
+            console.error('Error fetching characters: ', err);
+            res.status(500).send('Error fetching characters');
+            return;
+        }
+        res.redirect('/skillCategories.html');
+    });
+});
+
 app.listen(PORT, function() {
     console.log('Server started on http://localhost:' + PORT + '; press Ctrl-C to terminate.');
 });

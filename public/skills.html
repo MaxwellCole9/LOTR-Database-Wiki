@@ -8,40 +8,82 @@
     <script>
         // Function for fetching and searching character data from the server
         function fetchSkills(filter = '') { // Utilizing specifically the content typed into the search bar
-            fetch('/api/skills')             // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
-                .then(response => response.json())       // await response to catch errors
+            fetch('/api/skills')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+                .then(response => response.json())      // await response to catch errors
                 .then(skills => {
                     const filteredSkills = skills.filter(skill => 
                         skill.skillName.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
-                    const container = document.getElementById('container');            // Finding document 'container' placeholder to be filled with data
-                    container.innerHTML = '';        // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
+                    const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
+                    container.innerHTML = '';       // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
                     filteredSkills.forEach(skill => {
-                        const skillElement = document.createElement('div'); // Creating a new div for each skill (ensuring spacing)
+                        const skillElement = document.createElement('div'); // Creating a new div for each quest (ensuring spacing)
+                        skillElement.id = skill.skillTitle // Set title as quest ID
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         skillElement.innerHTML = `<h2>${skill.skillName}</h2>
                                                 <p>Description: ${skill.skillDescription}</p>
                                                 <p>Effect: ${skill.skillEffect}</p>
                                                 <p>Level Required: ${skill.levelRequired}</p>`;
 
+
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
                         editButton.onclick = function() {
-                        toggleEditMode(skillElement, skill);
+                            toggleEditMode(skillElement, skill);
                         };
                         skillElement.appendChild(editButton);
+
+                        // Create form for delete button
+                        const form = document.createElement('form');
+                        form.id = "Delete_" + skill.skillID // Set form ID as questID)
+                        form.action = '/api/deleteSkill';
+                        form.method = 'POST';
+                        form.className = 'deleteForm';
+
+                        // Appending delete functionality to the bottom of each div
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.type = 'submit';
+                        deleteButton.value = skill.skillID;
+                        deleteButton.name = 'skillID';
+                        form.appendChild(deleteButton);
+                        skillElement.appendChild(form);
 
                         container.appendChild(skillElement); // Append new child div to container on successful creation
                     });
                 });
-        }  
-        
-        function toggleEditMode(skillElement, quest) {
+        }
+
+        function toggleEditMode(skillElement, skill) {
         // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
             if (skillElement.querySelector('input')) {
                 skillElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
+                skillElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress 
                 skillElement.querySelector('button').textContent = 'Edit';     // Reset back to edit if the current edit session is cancelled.
+                skillElement.querySelectorAll('.deleteForm ').forEach(e => e.hidden = false); // Ensures delete form can now be seen
             } else {
+
+                skillElement.querySelectorAll('.deleteForm ').forEach(e => e.hidden = true); // Ensures delete form is hidden
+
+                // Citation for form function usage
+                // Date: 2/29/2024
+                // Adapted from usage found on w3schools website, with
+                //  regards to attributes and actions.
+                // Source URL: https://www.w3schools.com/tags/tag_form.asp
+                const form = document.createElement('form');
+                form.id = skill.skillID // Set form ID as questID)
+                form.action = '/api/updateSkill';
+                form.method = 'POST';
+                form.className = 'form';
+
+                // Create Quest ID hidden element for processing
+                const skillIDInput = document.createElement('input');
+                skillIDInput.type = 'text';
+                skillIDInput.name = "skillID";
+                skillIDInput.id = "skillID";
+                skillIDInput.value = skill["skillID"];
+                skillIDInput.hidden = true;
+                form.appendChild(skillIDInput);
 
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['skillName', 'skillDescription', 'skillEffect', 'levelRequired'];
@@ -49,40 +91,98 @@
                     const div = document.createElement('div');
                     div.className = 'editSection';
 
+                    // creating input labels for current types in the entity. this reads in the label to display to the user.
+                    div.innerHTML = `<p>${field}:</p>`
+
                     // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
                     const editInput = document.createElement('input');
                     editInput.type = 'text';
-                    editInput.value = quest[field];
+                    editInput.name = field;
+                    editInput.id = field;
+                    editInput.value = skill[field];
                     div.appendChild(editInput);
 
-                    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
-                    div.appendChild(deleteButton);
-
-                    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const completeEditButton = document.createElement('button');
-                    completeEditButton.textContent = 'Edit';
-                    div.appendChild(completeEditButton);
-
-                    // creating input fields for new inserts to the entity.
-                    const insertInput = document.createElement('input');
-                    insertInput.type = 'text';
-                    insertInput.placeholder = 'New Insert';
-                    div.appendChild(insertInput);
-
-                    //creating an insert button for the insert field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const insertButton = document.createElement('button');
-                    insertButton.textContent = 'Insert';
-                    div.appendChild(insertButton);
-
-                    skillElement.appendChild(div);
+                    form.appendChild(div);
                 });
+
+                const div = document.createElement('div');
+                div.className = 'editSection';
+
+                // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                const completeEditButton = document.createElement('button');
+                completeEditButton.textContent = 'Update';
+                completeEditButton.type = 'submit'
+                // console.log(quest);
+                // completeEditButton.onclick = function() {
+                //     updateQuest(quest)
+                // }
+
+                div.appendChild(completeEditButton);
+
+                form.appendChild(div);
+                skillElement.appendChild(form);
+
+                // form.appendChild(questElement);
                 
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 skillElement.querySelector('button').textContent = 'Cancel';
+
             }
         }
+
+        function toggleAddFunction() {
+            addSkillElement = document.getElementById('addQuestContainer');
+
+            if (addSkillElement.querySelector('input')) {
+                addSkillElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
+                addSkillElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress 
+                addSkillElement.querySelector('button').textContent = 'Add New Skill';     // Reset back to edit if the current edit session is cancelled.
+            } else {
+                const form = document.createElement('form');
+                form.id = "addSkill" // Set form ID as questID)
+                form.action = '/api/addSkill';
+                form.method = 'POST';
+                form.className = 'form';
+
+                // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
+                const fields = ['skillName', 'skillDescription', 'skillEffect', 'levelRequired'];
+                fields.forEach(field => {
+                    const div = document.createElement('div');
+                    div.className = 'editSection';
+
+                    // creating input labels for current types in the entity. this reads in the label to display to the user.
+                    div.innerHTML = `<p>${field}:</p>`
+
+                    // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
+                    const editInput = document.createElement('input');
+                    editInput.type = 'text';
+                    editInput.name = field;
+                    editInput.id = field;
+                    div.appendChild(editInput);
+
+                    form.appendChild(div);
+                });
+
+                const div = document.createElement('div');
+                div.className = 'editSection';
+
+                // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                const completeEditButton = document.createElement('button');
+                completeEditButton.textContent = 'Add';
+                completeEditButton.type = 'submit'
+
+                div.appendChild(completeEditButton);
+
+                form.appendChild(div);
+                addSkillElement.appendChild(form);
+
+                // form.appendChild(questElement);
+                
+                // Changing button text to Cancel after initial press to indicate user can cancel edit
+                addSkillElement.querySelector('button').textContent = 'Cancel';
+            }
+        }
+
 
         // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
         document.addEventListener('DOMContentLoaded', () => {
@@ -90,9 +190,9 @@
             searchInput.addEventListener('input', () => {
                 const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
                 fetchSkills(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
-        });
+            });
         
-            // Initial fetch of skills without filter (ensures all display on initial page load)
+            // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchSkills();
         });
 
@@ -116,6 +216,12 @@
     </header>
 
     <h1 id="page-title">Skills</h1>
+
+    <div id="addQuestContainer">
+        <button type="button" id="addQuest" onclick=toggleAddFunction()>Add New Quest</button>
+        <!-- Quest Form will be added here by the script -->
+    </div>
+
     <input type="text" id="search" placeholder="Search skills">
 
     <div id="container">

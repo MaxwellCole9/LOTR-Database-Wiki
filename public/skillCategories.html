@@ -215,19 +215,19 @@
         //  with regards to creating a dropdown menu in javascript.
         // Source: https://stackoverflow.com/questions/23718753/javascript-to-create-a-dropdown-list-and-get-the-selected-value
         function createSkillDropdown(element) {
-            fetch('/api/SkillCategories')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+            fetch('/api/Skills')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())      // await response to catch errors
-                .then(SkillCategories => {
+                .then(skills => {
 
                     const select = document.createElement('select');
                     select.name = "skillID";
                     select.id = "skillID";
 
-                    SkillCategories.forEach(skillCategory => {
+                    skills.forEach(skill => {
                         let option = document.createElement('option');
-                        option.value = skillCategory.skillID
-                        option.innerHTML = skillCategory.skillName
-                        option.id = skillCategory.skillID
+                        option.value = skill.skillID
+                        option.innerHTML = skill.skillName
+                        option.id = skill.skillID
                         select.appendChild(option);
                     });
 
@@ -236,19 +236,19 @@
         }
 
         function createCategoryDropdown(element) {
-            fetch('/api/SkillCategories')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+            fetch('/api/Categories')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())      // await response to catch errors
-                .then(SkillCategories => {
+                .then(categories => {
 
                     const select = document.createElement('select');
                     select.name = "categoryID";
                     select.id = "categoryID";
 
-                    SkillCategories.forEach(skillCategory => {
+                    categories.forEach(category => {
                         let option = document.createElement('option');
-                        option.value = skillCategory.categoryID
-                        option.innerHTML = skillCategory.category
-                        option.id = skillCategory.categoryID
+                        option.value = category.categoryID
+                        option.innerHTML = category.category
+                        option.id = category.categoryID
                         select.appendChild(option);
                     });
 

@@ -22,15 +22,8 @@
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         SkillCategoriesElement.innerHTML = `<h2>Skill: ${SkillCategory.skillName}</h2>
                                                             <h2>Category: ${SkillCategory.category}</h2>`;
-                        // Appending edit functionality to the bottom of each div
-                        const editButton = document.createElement('button');
-                        editButton.textContent = 'Edit';
-                        editButton.onclick = function() {
-                            toggleEditMode(SkillCategoriesElement, SkillCategory);
-                        };
-                        SkillCategoriesElement.appendChild(editButton);
-
-                        
+    
+                                                            
                         // Create form for delete button
                         const form = document.createElement('form');
                         form.id = "Delete_" + SkillCategory.skillID + "_" + SkillCategory.categoryID;
@@ -52,103 +45,15 @@
                 });
         }
 
-        function toggleEditMode(SkillCategoriesElement, SkillCategory) {
-
-            // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
-            if (SkillCategoriesElement.querySelector('input')) {
-                SkillCategoriesElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
-                SkillCategoriesElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress
-                SkillCategoriesElement.querySelector('button').textContent = 'Edit';     // Reset back to edit if the current edit session is cancelled.
-                SkillCategoriesElement.querySelectorAll('.deleteForm ').forEach(e => e.hidden = false); // Ensures delete form can now be seen
-            } else {
-
-                SkillCategoriesElement.querySelectorAll('.deleteForm ').forEach(e => e.hidden = true); // Ensures delete form is hidden
-
-                // Citation for form function usage
-                // Date: 2/29/2024
-                // Adapted from usage found on w3schools website, with
-                //  regards to attributes and actions.
-                // Source URL: https://www.w3schools.com/tags/tag_form.asp
-                const form = document.createElement('form');
-                form.id = SkillCategory.skillID + "_" + SkillCategory.categoryID;
-                form.action = '/api/updateSkillCategory';
-                form.method = 'POST';
-                form.className = 'form';
-
-                // Create Skill Cateogory ID hidden element for processing
-                const skillDInput = document.createElement('input');
-                skillDInput.type = 'text';
-                skillDInput.name = "old_skillID";
-                skillDInput.id = "old_skillID";
-                skillDInput.value = SkillCategory["skillID"];
-                skillDInput.hidden = true;
-                form.appendChild(skillDInput);
-
-                const categoryIDInput = document.createElement('input');
-                categoryIDInput.type = 'text';
-                categoryIDInput.name = "old_categoryID";
-                categoryIDInput.id = "old_categoryID";
-                categoryIDInput.value = SkillCategory["categoryID"];
-                categoryIDInput.hidden = true;
-                form.appendChild(categoryIDInput);
-
-                // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
-                const fields = ['skillName', 'category'];
-                const fieldNames = {
-                    'skillName': 'Skill', 
-                    'category': 'Category'
-                }
-                fields.forEach(field => {
-                    const div = document.createElement('div');
-                    div.className = 'editSection';
-
-                    // creating input labels for current types in the entity. this reads in the label to display to the user.
-                    div.innerHTML = `<p>${fieldNames[field]}: </p>`
-
-                    if (field === 'skillName') {
-                        createSkillDropdown(div);
-                    } else if (field === 'category') {
-                        createCategoryDropdown(div);
-                    }
-
-                    // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
-                    // const editInput = document.createElement('input');
-                    // editInput.type = 'text';
-                    // editInput.name = field;
-                    // editInput.id = field;
-                    // editInput.value = SkillCategory[field];
-                    // div.appendChild(editInput);
-
-                    form.appendChild(div);
-                });
-
-                const div = document.createElement('div');
-                div.className = 'editSection';
-
-                // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                const completeEditButton = document.createElement('button');
-                completeEditButton.textContent = 'Update';
-                completeEditButton.type = 'submit'
-
-                div.appendChild(completeEditButton);
-
-                form.appendChild(div);
-                SkillCategoriesElement.appendChild(form);
-                
-                // Changing button text to Cancel after initial press to indicate user can cancel edit
-                SkillCategoriesElement.querySelector('button').textContent = 'Cancel';
-            }
-        }
-        
         function toggleAddFunction(SkillCategoriesElement, SkillCategory) {
 
             addSkillCategoriesElement = document.getElementById('addContainer');
             
             // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
-            if (addSkillCategoriesElement.querySelector('input')) {
+            if (addSkillCategoriesElement.querySelector('option')) {
                 addSkillCategoriesElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
                 addSkillCategoriesElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress
-                addSkillCategoriesElement.querySelector('button').textContent = 'Edit';     // Reset back to edit if the current edit session is cancelled.
+                addSkillCategoriesElement.querySelector('button').textContent = 'Add New Skill Category';     // Reset back to edit if the current edit session is cancelled.
             } else {
 
                 // Citation for form function usage

@@ -131,7 +131,7 @@
         }
 
         function toggleAddFunction() {
-            addSkillElement = document.getElementById('addQuestContainer');
+            addSkillElement = document.getElementById('addContainer');
 
             if (addSkillElement.querySelector('input')) {
                 addSkillElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
@@ -139,7 +139,7 @@
                 addSkillElement.querySelector('button').textContent = 'Add New Skill';     // Reset back to edit if the current edit session is cancelled.
             } else {
                 const form = document.createElement('form');
-                form.id = "addSkill" // Set form ID as questID)
+                form.id = "addSkill" // Set form ID as skillID)
                 form.action = '/api/addSkill';
                 form.method = 'POST';
                 form.className = 'form';
@@ -217,9 +217,9 @@
 
     <h1 id="page-title">Skills</h1>
 
-    <div id="addQuestContainer">
-        <button type="button" id="addQuest" onclick=toggleAddFunction()>Add New Quest</button>
-        <!-- Quest Form will be added here by the script -->
+    <div id="addContainer">
+        <button type="button" id="addSkill" onclick=toggleAddFunction()>Add New Skill</button>
+        <!-- Skill Form will be added here by the script -->
     </div>
 
     <input type="text" id="search" placeholder="Search skills">

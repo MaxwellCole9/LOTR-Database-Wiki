@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Character Skills</title>
@@ -23,64 +24,148 @@
                         characterSkillsElement.innerHTML = `<h2>Character: ${characterSkill.name}</h2>
                                                             <h2>Skill: ${characterSkill.skillName}</h2>`;
                         // Appending edit functionality to the bottom of each div
-                        const editButton = document.createElement('button');
-                        editButton.textContent = 'Edit';
-                        editButton.onclick = function() {
-                        toggleEditMode(characterSkillsElement, characterSkill);
-                        };
-                        characterSkillsElement.appendChild(editButton);
+                        // const editButton = document.createElement('button');
+                        // editButton.textContent = 'Edit';
+                        // editButton.onclick = function() {
+                        // toggleEditMode(characterSkillsElement, characterSkill);
+                        // };
+                        // characterSkillsElement.appendChild(editButton);
+
+                        // Create form for delete button
+                        const form = document.createElement('form');
+                        form.id = "Delete_" + characterSkill.characterID + "_" + characterSkill.skillID;
+                        form.action = '/api/deleteCharacterSkill';
+                        form.method = 'POST';
+                        form.className = 'deleteForm';
+
+                        // Appending delete functionality to the bottom of each div
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.type = 'submit';
+                        deleteButton.value = characterSkill.characterID + "_" + characterSkill.skillID;
+                        deleteButton.name = 'characterID_skillID';
+                        form.appendChild(deleteButton);
+                        characterSkillsElement.appendChild(form);
 
                         container.appendChild(characterSkillsElement); // Append new child div to container on succesful creation
                     });
                 });
         }
-        
-        function toggleEditMode(characterSkillsElement, characterSkill) {
-        // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
-            if (characterSkillsElement.querySelector('input')) {
-                characterSkillsElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
-                characterSkillsElement.querySelector('button').textContent = 'Edit';     // Reset back to edit if the current edit session is cancelled.
+
+        function toggleAddFunction(element, SkillCategory) {
+
+            element = document.getElementById('addContainer');
+
+            // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
+            if (element.querySelector('option')) {
+                element.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
+                element.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress
+                element.querySelector('button').textContent = 'Add New Character Skill';     // Reset back to edit if the current edit session is cancelled.
             } else {
+
+                // Citation for form function usage
+                // Date: 2/29/2024
+                // Adapted from usage found on w3schools website, with
+                //  regards to attributes and actions.
+                // Source URL: https://www.w3schools.com/tags/tag_form.asp
+                const form = document.createElement('form');
+                form.id = "addCharacterSkills";
+                form.action = '/api/addCharacterSkill';
+                form.method = 'POST';
+                form.className = 'form';
 
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['name', 'skillName'];
+                const fieldNames = {
+                    'skillName': 'Skill',
+                    'name': 'Name'
+                }
                 fields.forEach(field => {
                     const div = document.createElement('div');
                     div.className = 'editSection';
 
+                    // creating input labels for current types in the entity. this reads in the label to display to the user.
+                    div.innerHTML = `<p>${fieldNames[field]}: </p>`
+
+                    if (field === 'skillName') {
+                        createSkillDropdown(div);
+                    } else if (field === 'name') {
+                        createCharacterDropdown(div);
+                    }
+
                     // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
-                    const editInput = document.createElement('input');
-                    editInput.type = 'text';
-                    editInput.value = characterSkill[field];
-                    div.appendChild(editInput);
+                    // const editInput = document.createElement('input');
+                    // editInput.type = 'text';
+                    // editInput.name = field;
+                    // editInput.id = field;
+                    // div.appendChild(editInput);
 
-                    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
-                    div.appendChild(deleteButton);
-
-                    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const completeEditButton = document.createElement('button');
-                    completeEditButton.textContent = 'Edit';
-                    div.appendChild(completeEditButton);
-
-                    // creating input fields for new inserts to the entity.
-                    const insertInput = document.createElement('input');
-                    insertInput.type = 'text';
-                    insertInput.placeholder = 'New Insert';
-                    div.appendChild(insertInput);
-
-                    //creating an insert button for the insert field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-                    const insertButton = document.createElement('button');
-                    insertButton.textContent = 'Insert';
-                    div.appendChild(insertButton);
-
-                    characterSkillsElement.appendChild(div);
+                    form.appendChild(div);
                 });
-                
+
+                const div = document.createElement('div');
+                div.className = 'editSection';
+
+                // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                const completeEditButton = document.createElement('button');
+                completeEditButton.textContent = 'Add';
+                completeEditButton.type = 'submit'
+
+                div.appendChild(completeEditButton);
+
+                form.appendChild(div);
+                element.appendChild(form);
+
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
-                characterSkillsElement.querySelector('button').textContent = 'Cancel';
+                element.querySelector('button').textContent = 'Cancel';
             }
+        }
+
+        // Citation for the dropdown functions below
+        // Date: 3/7/2024
+        // Adapted from usage found on this stack overflow post
+        //  with regards to creating a dropdown menu in javascript.
+        // Source: https://stackoverflow.com/questions/23718753/javascript-to-create-a-dropdown-list-and-get-the-selected-value
+        function createSkillDropdown(element) {
+            fetch('/api/Skills')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+                .then(response => response.json())      // await response to catch errors
+                .then(skills => {
+
+                    const select = document.createElement('select');
+                    select.name = "skillID";
+                    select.id = "skillID";
+
+                    skills.forEach(skill => {
+                        let option = document.createElement('option');
+                        option.value = skill.skillID
+                        option.innerHTML = skill.skillName
+                        option.id = skill.skillID
+                        select.appendChild(option);
+                    });
+
+                    element.appendChild(select);
+                });
+        }
+
+        function createCharacterDropdown(element) {
+            fetch('/api/Characters')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+                .then(response => response.json())      // await response to catch errors
+                .then(characters => {
+
+                    const select = document.createElement('select');
+                    select.name = "characterID";
+                    select.id = "characterID";
+
+                    characters.forEach(character => {
+                        let option = document.createElement('option');
+                        option.value = character.characterID
+                        option.innerHTML = character.name
+                        option.id = character.characterID
+                        select.appendChild(option);
+                    });
+
+                    element.appendChild(select);
+                });
         }
 
         // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
@@ -90,13 +175,14 @@
             //     const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
             //     fetchCharacterSkills(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
             // });
-        
+
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchCharacterSkills();
         });
 
     </script>
 </head>
+
 <body>
     <header>
         <nav>
@@ -116,8 +202,14 @@
     <h1 id="page-title">Character Skills</h1>
     <!-- <input type="text" id="search" placeholder="Search items"> -->
 
+    <div id="addContainer">
+        <button type="button" id="addCharacterSkill" onclick=toggleAddFunction()>Add New Character Skill</button>
+        <!-- Form will be added here by the script -->
+    </div>
+
     <div id="container">
         <!-- Characters will be added here by the script -->
     </div>
 </body>
+
 </html>

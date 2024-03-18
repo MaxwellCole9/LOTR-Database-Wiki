@@ -128,7 +128,7 @@
         }
 
         function toggleAddFunction() {
-            addCategoryElement = document.getElementById('addQuestContainer');
+            addCategoryElement = document.getElementById('addContainer');
 
             if (addCategoryElement.querySelector('input')) {
                 addCategoryElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
@@ -136,7 +136,7 @@
                 addCategoryElement.querySelector('button').textContent = 'Add New Category';     // Reset back to edit if the current edit session is cancelled.
             } else {
                 const form = document.createElement('form');
-                form.id = "addCategory" // Set form ID as questID)
+                form.id = "addCategory" // Set form ID as categoryID)
                 form.action = '/api/addCategory';
                 form.method = 'POST';
                 form.className = 'form';
@@ -214,9 +214,9 @@
 
     <h1 id="page-title">Categories</h1>
 
-    <div id="addQuestContainer">
+    <div id="addContainer">
         <button type="button" id="addCategory" onclick=toggleAddFunction()>Add New Category</button>
-        <!-- Quest Form will be added here by the script -->
+        <!-- Category Form will be added here by the script -->
     </div>
 
     <input type="text" id="search" placeholder="Search categories">

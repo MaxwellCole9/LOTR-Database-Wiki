@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Quests</title>
@@ -10,7 +11,7 @@
             fetch('/api/quests')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())      // await response to catch errors
                 .then(quests => {
-                    const filteredQuests = quests.filter(quest => 
+                    const filteredQuests = quests.filter(quest =>
                         quest.questTitle.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
                     const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
                     container.innerHTML = '';       // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
@@ -28,7 +29,7 @@
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
-                        editButton.onclick = function() {
+                        editButton.onclick = function () {
                             toggleEditMode(questElement, quest);
                         };
                         questElement.appendChild(editButton);
@@ -55,7 +56,7 @@
         }
 
         function toggleEditMode(questElement, quest) {
-        // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
+            // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
             if (questElement.querySelector('input')) {
                 questElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
                 questElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress 
@@ -88,11 +89,11 @@
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['questTitle', 'questDescription', 'questLocation', 'questStatus', 'levelRequired'];
                 const fieldNames = {
-                    'questTitle': 'Title', 
+                    'questTitle': 'Title',
                     'questDescription': 'Description',
                     'questLocation': 'Location',
                     'questStatus': 'Status',
-                    'levelRequired': 'Level Required' 
+                    'levelRequired': 'Level Required'
                 }
                 fields.forEach(field => {
                     const div = document.createElement('div');
@@ -124,7 +125,7 @@
 
                 form.appendChild(div);
                 questElement.appendChild(form);
-                
+
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 questElement.querySelector('button').textContent = 'Cancel';
 
@@ -148,11 +149,11 @@
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['questTitle', 'questDescription', 'questLocation', 'questStatus', 'levelRequired'];
                 const fieldNames = {
-                    'questTitle': 'Title', 
+                    'questTitle': 'Title',
                     'questDescription': 'Description',
                     'questLocation': 'Location',
                     'questStatus': 'Status',
-                    'levelRequired': 'Level Required' 
+                    'levelRequired': 'Level Required'
                 }
                 fields.forEach(field => {
                     const div = document.createElement('div');
@@ -185,7 +186,7 @@
                 addQuestElement.appendChild(form);
 
                 // form.appendChild(questElement);
-                
+
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 addQuestElement.querySelector('button').textContent = 'Cancel';
             }
@@ -199,13 +200,14 @@
                 const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
                 fetchQuests(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
             });
-        
+
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchQuests();
         });
 
     </script>
 </head>
+
 <body>
     <header>
         <nav>
@@ -235,4 +237,5 @@
         <!-- Quests will be added here by the script -->
     </div>
 </body>
+
 </html>

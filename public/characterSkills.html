@@ -23,13 +23,6 @@
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         characterSkillsElement.innerHTML = `<h2>Character: ${characterSkill.name}</h2>
                                                             <h2>Skill: ${characterSkill.skillName}</h2>`;
-                        // Appending edit functionality to the bottom of each div
-                        // const editButton = document.createElement('button');
-                        // editButton.textContent = 'Edit';
-                        // editButton.onclick = function() {
-                        // toggleEditMode(characterSkillsElement, characterSkill);
-                        // };
-                        // characterSkillsElement.appendChild(editButton);
 
                         // Create form for delete button
                         const form = document.createElement('form');
@@ -92,13 +85,6 @@
                     } else if (field === 'name') {
                         createCharacterDropdown(div);
                     }
-
-                    // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
-                    // const editInput = document.createElement('input');
-                    // editInput.type = 'text';
-                    // editInput.name = field;
-                    // editInput.id = field;
-                    // div.appendChild(editInput);
 
                     form.appendChild(div);
                 });
@@ -170,11 +156,6 @@
 
         // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
         document.addEventListener('DOMContentLoaded', () => {
-            // const searchInput = document.getElementById('search');
-            // searchInput.addEventListener('input', () => {
-            //     const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
-            //     fetchCharacterSkills(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
-            // });
 
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchCharacterSkills();

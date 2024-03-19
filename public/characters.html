@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Characters</title>
@@ -11,7 +12,7 @@
             fetch('/api/characters')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())      // await response to catch errors
                 .then(characters => {
-                    const filteredCharacters = characters.filter(character => 
+                    const filteredCharacters = characters.filter(character =>
                         character.name.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
 
                     const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
@@ -25,12 +26,12 @@
                                                     <p>Dexterity: ${character.dexterity}</p>
                                                     <p>Defense: ${character.defense || 'N/A'}</p>
                                                     <p>Attack: ${character.attack || 'N/A'}</p>`;
-                        
+
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
-                        editButton.onclick = function() {
-                        toggleEditMode(characterElement, character);
+                        editButton.onclick = function () {
+                            toggleEditMode(characterElement, character);
                         };
                         characterElement.appendChild(editButton);
 
@@ -54,9 +55,9 @@
                     });
                 });
         }
-        
+
         function toggleEditMode(characterElement, character) {
-        // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
+            // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
             if (characterElement.querySelector('input')) {
                 characterElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
                 characterElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress
@@ -65,7 +66,7 @@
 
             } else {
 
-                
+
                 characterElement.querySelectorAll('.deleteForm ').forEach(e => e.hidden = true); // Ensures delete form is hidden
 
                 // Citation for form function usage
@@ -91,12 +92,12 @@
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['name', 'characterDescription', 'health', 'dexterity', 'defense', 'attack'];
                 const fieldNames = {
-                    'name': 'Name', 
+                    'name': 'Name',
                     'characterDescription': 'Description',
                     'health': 'Health',
                     'dexterity': 'Dexterity',
                     'defense': 'Defense',
-                    'attack': 'Attack' 
+                    'attack': 'Attack'
                 }
                 fields.forEach(field => {
                     const div = document.createElement('div');
@@ -115,7 +116,7 @@
 
                     form.appendChild(div);
                 });
-                
+
                 const div = document.createElement('div');
                 div.className = 'editSection';
 
@@ -151,12 +152,12 @@
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['name', 'characterDescription', 'health', 'dexterity', 'defense', 'attack'];
                 const fieldNames = {
-                    'name': 'Name', 
+                    'name': 'Name',
                     'characterDescription': 'Description',
                     'health': 'Health',
                     'dexterity': 'Dexterity',
                     'defense': 'Defense',
-                    'attack': 'Attack' 
+                    'attack': 'Attack'
                 }
                 fields.forEach(field => {
                     const div = document.createElement('div');
@@ -189,7 +190,7 @@
                 addCharacterElement.appendChild(form);
 
                 // form.appendChild(questElement);
-                
+
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 addCharacterElement.querySelector('button').textContent = 'Cancel';
             }
@@ -201,14 +202,15 @@
             searchInput.addEventListener('input', () => {
                 const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
                 fetchCharacters(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
-        });
-        
+            });
+
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchCharacters();
         });
 
     </script>
 </head>
+
 <body>
     <header>
         <nav>
@@ -238,4 +240,5 @@
         <!-- Characters will be added here by the script -->
     </div>
 </body>
+
 </html>

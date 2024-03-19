@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Skill Categories</title>
@@ -22,8 +23,8 @@
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         SkillCategoriesElement.innerHTML = `<h2>Skill: ${SkillCategory.skillName}</h2>
                                                             <h2>Category: ${SkillCategory.category}</h2>`;
-    
-                                                            
+
+
                         // Create form for delete button
                         const form = document.createElement('form');
                         form.id = "Delete_" + SkillCategory.skillID + "_" + SkillCategory.categoryID;
@@ -48,7 +49,7 @@
         function toggleAddFunction(SkillCategoriesElement, SkillCategory) {
 
             addSkillCategoriesElement = document.getElementById('addContainer');
-            
+
             // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
             if (addSkillCategoriesElement.querySelector('option')) {
                 addSkillCategoriesElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
@@ -70,7 +71,7 @@
                 // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
                 const fields = ['skillName', 'category'];
                 const fieldNames = {
-                    'skillName': 'Skill', 
+                    'skillName': 'Skill',
                     'category': 'Category'
                 }
                 fields.forEach(field => {
@@ -79,20 +80,12 @@
 
                     // creating input labels for current types in the entity. this reads in the label to display to the user.
                     div.innerHTML = `<p>${fieldNames[field]}: </p>`
-                    
+
                     if (field === 'skillName') {
                         createSkillDropdown(div);
                     } else if (field === 'category') {
                         createCategoryDropdown(div);
                     }
-
-                    // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
-                    // const editInput = document.createElement('input');
-                    // editInput.type = 'text';
-                    // editInput.name = field;
-                    // editInput.id = field;
-                    // div.appendChild(editInput);
-
                     form.appendChild(div);
                 });
 
@@ -108,7 +101,7 @@
 
                 form.appendChild(div);
                 addSkillCategoriesElement.appendChild(form);
-                
+
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 addSkillCategoriesElement.querySelector('button').textContent = 'Cancel';
             }
@@ -137,7 +130,7 @@
                     });
 
                     element.appendChild(select);
-            });
+                });
         }
 
         function createCategoryDropdown(element) {
@@ -158,25 +151,21 @@
                     });
 
                     element.appendChild(select);
-            });
+                });
         }
 
 
 
         // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
         document.addEventListener('DOMContentLoaded', () => {
-            // const searchInput = document.getElementById('search');
-            // searchInput.addEventListener('input', () => {
-            //     const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
-            //     fetchSkillCategories(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
-            // });
-        
+
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchSkillCategories();
         });
 
     </script>
 </head>
+
 <body>
     <header>
         <nav>
@@ -204,4 +193,5 @@
         <!-- Characters will be added here by the script -->
     </div>
 </body>
+
 </html>

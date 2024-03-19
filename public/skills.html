@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Skills</title>
@@ -11,7 +12,7 @@
             fetch('/api/skills')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())      // await response to catch errors
                 .then(skills => {
-                    const filteredSkills = skills.filter(skill => 
+                    const filteredSkills = skills.filter(skill =>
                         skill.skillName.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
                     const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
                     container.innerHTML = '';       // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
@@ -28,7 +29,7 @@
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
-                        editButton.onclick = function() {
+                        editButton.onclick = function () {
                             toggleEditMode(skillElement, skill);
                         };
                         skillElement.appendChild(editButton);
@@ -55,7 +56,7 @@
         }
 
         function toggleEditMode(skillElement, skill) {
-        // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
+            // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
             if (skillElement.querySelector('input')) {
                 skillElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
                 skillElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress 
@@ -111,19 +112,13 @@
                 // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
                 const completeEditButton = document.createElement('button');
                 completeEditButton.textContent = 'Update';
-                completeEditButton.type = 'submit'
-                // console.log(quest);
-                // completeEditButton.onclick = function() {
-                //     updateQuest(quest)
-                // }
+                completeEditButton.type = 'submit';
 
                 div.appendChild(completeEditButton);
 
                 form.appendChild(div);
                 skillElement.appendChild(form);
 
-                // form.appendChild(questElement);
-                
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 skillElement.querySelector('button').textContent = 'Cancel';
 
@@ -177,7 +172,7 @@
                 addSkillElement.appendChild(form);
 
                 // form.appendChild(questElement);
-                
+
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 addSkillElement.querySelector('button').textContent = 'Cancel';
             }
@@ -191,7 +186,7 @@
                 const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
                 fetchSkills(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
             });
-        
+
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchSkills();
         });
@@ -199,6 +194,7 @@
     </script>
 
 </head>
+
 <body>
     <header>
         <nav>
@@ -228,4 +224,5 @@
         <!-- Skills will be added here by the script -->
     </div>
 </body>
+
 </html>

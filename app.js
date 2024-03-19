@@ -15,6 +15,9 @@ app.use(express.static('public'));
 */
 app.use(bodyParser.urlencoded({ extended: false }));
 
+/*
+    Get Characters from database.
+*/
 app.get('/api/Characters', function (req, res) {
     const query = 'SELECT * FROM Characters;';
 
@@ -28,54 +31,57 @@ app.get('/api/Characters', function (req, res) {
     });
 });
 
+/*
+    Add Character to database.
+*/
 app.post('/api/addCharacter', function (req, res) {
     let params = req.body
     const query = `INSERT INTO Characters (name, characterDescription, health, dexterity, defense, attack) VALUES ("${params.name}", "${params.characterDescription}", ${params.health}, ${params.dexterity}, ${params.defense}, ${params.attack});`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating quests: ', err);
             res.status(500).send('Error updating quests');
-            return;
         }
         res.redirect('/characters.html')
     });
 });
 
+/*
+    Update Character in database.
+*/
 app.post('/api/updateCharacter', function (req, res) {
     let params = req.body
     const query = `UPDATE Characters SET name = "${params.name}", characterDescription = "${params.characterDescription}", health = ${params.health}, dexterity = ${params.dexterity}, defense = ${params.defense}, health = ${params.attack} WHERE characterID = ${params.characterID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating quests: ', err);
             res.status(500).send('Error updating quests');
-            return;
         }
-        // res.json(results);
         res.redirect('/characters.html')
     });
 });
 
+/*
+    Delete Character in database.
+*/
 app.post('/api/deleteCharacter', function (req, res) {
-    let params = req.body
-    console.log(params);
+    let params = req.body;
     const query = `DELETE FROM Characters WHERE characterID = ${params.characterID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating quests: ', err);
             res.status(500).send('Error updating quests');
-            return;
         }
-        // res.json(results);
         res.redirect('/characters.html')
     });
 });
 
+/*
+    Get Skills from database.
+*/
 app.get('/api/Skills', function (req, res) {
     const query = 'SELECT * FROM Skills;';
 
@@ -89,54 +95,57 @@ app.get('/api/Skills', function (req, res) {
     });
 });
 
+/*
+    Add Skill to database.
+*/
 app.post('/api/addSkill', function (req, res) {
     let params = req.body
     const query = `INSERT INTO Skills (skillName, skillDescription, skillEffect, levelRequired) VALUES ("${params.skillName}", "${params.skillDescription}", "${params.skillEffect}", ${params.levelRequired});`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating skills: ', err);
             res.status(500).send('Error updating skills');
-            return;
         }
         res.redirect('/skills.html')
     });
 });
 
+/*
+    Update Skill in database.
+*/
 app.post('/api/updateSkill', function (req, res) {
     let params = req.body
     const query = `UPDATE Skills SET skillName = "${params.skillName}", skillDescription = "${params.skillDescription}", skillEffect = "${params.skillEffect}", levelRequired = ${params.levelRequired};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating skills: ', err);
             res.status(500).send('Error updating skills');
-            return;
         }
-        // res.json(results);
         res.redirect('/skills.html')
     });
 });
 
+/*
+    Delete Skill in database.
+*/
 app.post('/api/deleteSkill', function (req, res) {
     let params = req.body
-    console.log(params);
     const query = `DELETE FROM Skills WHERE skillID = ${params.skillID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating skills: ', err);
             res.status(500).send('Error updating skills');
-            return;
         }
-        // res.json(results);
         res.redirect('/skills.html')
     });
 });
 
+/*
+    Get Items from database.
+*/
 app.get('/api/Items', function (req, res) {
     const query = 'SELECT * FROM Items;';
 
@@ -150,54 +159,57 @@ app.get('/api/Items', function (req, res) {
     });
 });
 
+/*
+    Add Item to database.
+*/
 app.post('/api/addItem', function (req, res) {
     let params = req.body
     const query = `INSERT INTO Items (name, itemDescription, levelRequired) VALUES ("${params.name}", "${params.itemDescription}", ${params.levelRequired});`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating quests: ', err);
             res.status(500).send('Error updating quests');
-            return;
         }
         res.redirect('/items.html')
     });
 });
 
+/*
+    Update Item in database.
+*/
 app.post('/api/updateItem', function (req, res) {
     let params = req.body
     const query = `UPDATE Items SET name = "${params.name}", itemDescription = "${params.itemDescription}", levelRequired = ${params.levelRequired} WHERE itemID = ${params.itemID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating quests: ', err);
             res.status(500).send('Error updating quests');
-            return;
         }
-        // res.json(results);
         res.redirect('/items.html')
     });
 });
 
+/*
+    Delete Item in database.
+*/
 app.post('/api/deleteItem', function (req, res) {
     let params = req.body
-    console.log(params);
     const query = `DELETE FROM Items WHERE itemID = ${params.itemID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating quests: ', err);
             res.status(500).send('Error updating quests');
-            return;
         }
-        // res.json(results);
         res.redirect('/items.html')
     });
 });
 
+/*
+    Get Categories from database.
+*/
 app.get('/api/Categories', function (req, res) {
     const query = 'SELECT * FROM Categories;';
 
@@ -211,53 +223,57 @@ app.get('/api/Categories', function (req, res) {
     });
 });
 
+/*
+    Add Category to database.
+*/
 app.post('/api/addCategory', function (req, res) {
     let params = req.body;
     const query = `INSERT INTO Categories (category, categoryDescription) VALUES ("${params.category}", "${params.categoryDescription}");`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error adding category: ', err);
-            res.status(500).send('Error adding category');
-            return;
+            res.status(500).send('Error adding category');;
         }
         res.redirect('/categories.html');
     });
 });
 
-// Update an existing category
+/*
+    Update Category in database.
+*/
 app.post('/api/updateCategory', function (req, res) {
     let params = req.body;
     const query = `UPDATE Categories SET category = "${params.category}", categoryDescription = "${params.categoryDescription}" WHERE categoryID = ${params.categoryID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating category: ', err);
             res.status(500).send('Error updating category');
-            return;
         }
         res.redirect('/categories.html');
     });
 });
 
-// Delete a category
+/*
+    Delete Category in database.
+*/
 app.post('/api/deleteCategory', function (req, res) {
     let params = req.body;
     const query = `DELETE FROM Categories WHERE categoryID = ${params.categoryID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error deleting category: ', err);
             res.status(500).send('Error deleting category');
-            return;
         }
         res.redirect('/categories.html');
     });
 });
 
+/*
+    Get Quests from database.
+*/
 app.get('/api/Quests', function (req, res) {
     const query = 'SELECT * FROM Quests;';
 
@@ -271,54 +287,57 @@ app.get('/api/Quests', function (req, res) {
     });
 });
 
+/*
+    Add Quest to database.
+*/
 app.post('/api/addQuest', function (req, res) {
     let params = req.body
     const query = `INSERT INTO Quests (questTitle, questDescription, questLocation, questStatus, levelRequired) VALUES ("${params.questTitle}", "${params.questDescription}", "${params.questLocation}", ${params.questStatus}, ${params.levelRequired});`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating quests: ', err);
             res.status(500).send('Error updating quests');
-            return;
         }
         res.redirect('/quests.html')
     });
 });
 
+/*
+    Update Quest in database.
+*/
 app.post('/api/updateQuest', function (req, res) {
     let params = req.body
     const query = `UPDATE Quests SET questTitle = "${params.questTitle}", questDescription = "${params.questDescription}", questLocation = "${params.questLocation}", questStatus = ${params.questStatus}, levelRequired = ${params.levelRequired} WHERE questID = ${params.questID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating quests: ', err);
             res.status(500).send('Error updating quests');
-            return;
         }
-        // res.json(results);
         res.redirect('/quests.html')
     });
 });
 
+/*
+    Delete Quest in database.
+*/
 app.post('/api/deleteQuest', function (req, res) {
-    let params = req.body
-    console.log(params);
+    let params = req.body;
     const query = `DELETE FROM Quests WHERE questID = ${params.questID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error updating quests: ', err);
             res.status(500).send('Error updating quests');
-            return;
         }
-        // res.json(results);
         res.redirect('/quests.html')
     });
 });
 
+/*
+    Get CharacterSkills from database.
+*/
 app.get('/api/CharacterSkills', function (req, res) {
     const query = 'SELECT * FROM CharacterSkills JOIN Characters ON CharacterSkills.characterID = Characters.characterID JOIN Skills ON CharacterSkills.skillID = Skills.skillID;';
 
@@ -332,9 +351,11 @@ app.get('/api/CharacterSkills', function (req, res) {
     });
 });
 
+/*
+    Add CharacterSkill to database.
+*/
 app.post('/api/addCharacterSkill', function (req, res) {
     let params = req.body;
-    console.log(params);
     const query = `INSERT INTO CharacterSkills (characterID, skillID) VALUES (${params.characterID}, ${params.skillID});`;
 
     db.pool.query(query, function (err, results) {
@@ -348,30 +369,33 @@ app.post('/api/addCharacterSkill', function (req, res) {
 
             console.error('Error fetching characters: ', err);
             res.status(500).send('Error fetching characters');
-            return;
         }
         res.redirect('/characterSkills.html');
     });
 });
 
+/*
+    Delete CharacterSkill in database.
+*/
 app.post('/api/deleteCharacterSkill', function (req, res) {
     let params = req.body;
     let paramIds = params.characterID_skillID.split("_");
     let characterID = Number(paramIds[0]);
     let skillID = Number(paramIds[1]);
     const query = `DELETE FROM CharacterSkills WHERE characterID = ${characterID} AND skillID = ${skillID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error fetching characters: ', err);
             res.status(500).send('Error fetching characters');
-            return;
         }
         res.redirect('/characterSkills.html');
     });
 });
 
+/*
+    Get ItemCategories from database.
+*/
 app.get('/api/ItemCategories', function (req, res) {
     const query = 'SELECT * FROM ItemCategories JOIN Items on ItemCategories.itemID = Items.itemID JOIN Categories ON ItemCategories.categoryID = Categories.categoryID;';
 
@@ -385,9 +409,11 @@ app.get('/api/ItemCategories', function (req, res) {
     });
 });
 
+/*
+    Add ItemCategory to database.
+*/
 app.post('/api/addItemCategory', function (req, res) {
     let params = req.body;
-    console.log(params);
     const query = `INSERT INTO ItemCategories (itemID, categoryID) VALUES (${params.itemID}, ${params.categoryID});`;
 
     db.pool.query(query, function (err, results) {
@@ -401,30 +427,33 @@ app.post('/api/addItemCategory', function (req, res) {
 
             console.error('Error fetching characters: ', err);
             res.status(500).send('Error fetching characters');
-            return;
         }
         res.redirect('/itemCategories.html');
     });
 });
 
+/*
+    Delete ItemCategory in database.
+*/
 app.post('/api/deleteItemCategory', function (req, res) {
     let params = req.body;
     let paramIds = params.itemID_categoryID.split("_");
     let itemID = Number(paramIds[0]);
     let categoryID = Number(paramIds[1]);
     const query = `DELETE FROM ItemCategories WHERE itemID = ${itemID} AND categoryID = ${categoryID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error fetching characters: ', err);
             res.status(500).send('Error fetching characters');
-            return;
         }
         res.redirect('/itemCategories.html');
     });
 });
 
+/*
+    Get QuestRequirements from database.
+*/
 app.get('/api/QuestRequirements', function (req, res) {
     const query = 'SELECT * FROM QuestRequirements JOIN Quests ON QuestRequirements.questID = Quests.questID JOIN Characters ON QuestRequirements.characterID = Characters.characterID;';
 
@@ -438,9 +467,11 @@ app.get('/api/QuestRequirements', function (req, res) {
     });
 });
 
+/*
+    Add QuestRequirement to database.
+*/
 app.post('/api/addQuestRequirement', function (req, res) {
     let params = req.body;
-    console.log(params);
     const query = `INSERT INTO QuestRequirements (questID, characterID) VALUES (${params.questID}, ${params.characterID});`;
 
     db.pool.query(query, function (err, results) {
@@ -454,30 +485,33 @@ app.post('/api/addQuestRequirement', function (req, res) {
 
             console.error('Error fetching characters: ', err);
             res.status(500).send('Error fetching characters');
-            return;
         }
         res.redirect('/questRequirements.html');
     });
 });
 
+/*
+    Delete QuestRequirement in database.
+*/
 app.post('/api/deleteQuestRequirement', function (req, res) {
     let params = req.body;
     let paramIds = params.questID_characterID.split("_");
     let questID = Number(paramIds[0]);
     let characterID = Number(paramIds[1]);
     const query = `DELETE FROM QuestRequirements WHERE questID = ${questID} AND characterID = ${characterID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error fetching characters: ', err);
             res.status(500).send('Error fetching characters');
-            return;
         }
         res.redirect('/questRequirements.html');
     });
 });
 
+/*
+    Get SkillCategories from database.
+*/
 app.get('/api/SkillCategories', function (req, res) {
     const query = 'SELECT * FROM SkillCategories JOIN Skills on SkillCategories.skillID = Skills.skillID JOIN Categories ON SkillCategories.categoryID = Categories.categoryID;';
 
@@ -491,9 +525,11 @@ app.get('/api/SkillCategories', function (req, res) {
     });
 });
 
+/*
+    Add SkillCategory to database.
+*/
 app.post('/api/addSkillCategory', function (req, res) {
     let params = req.body;
-    console.log(params);
     const query = `INSERT INTO SkillCategories (skillID, categoryID) VALUES (${params.skillID}, ${params.categoryID});`;
 
     db.pool.query(query, function (err, results) {
@@ -507,48 +543,31 @@ app.post('/api/addSkillCategory', function (req, res) {
 
             console.error('Error fetching characters: ', err);
             res.status(500).send('Error fetching characters');
-            return;
         }
         res.redirect('/skillCategories.html');
     });
 });
 
-app.post('/api/updateSkillCategory', function (req, res) {
-    let params = req.body;
-    console.log(params);
-    const query = `UPDATE SkillCategories SET skillID = ${params.skillID} AND categoryID = ${params.categoryID} WHERE skillID = ${params.old_skillID} AND categoryID = ${params.old_categoryID};`;
-    console.log(query);
-
-    db.pool.query(query, function (err, results) {
-        if (err) {
-            console.error('Error fetching characters: ', err);
-            res.status(500).send('Error fetching characters');
-            return;
-        }
-        res.redirect('/skillCategories.html');
-    });
-});
-
+/*
+    Delete SkillCategory in database.
+*/
 app.post('/api/deleteSkillCategory', function (req, res) {
     let params = req.body;
     let paramIds = params.skillID_categoryID.split("_");
     let skillID = Number(paramIds[0]);
     let categoryID = Number(paramIds[1]);
-    console.log(skillID);
-    console.log(categoryID);
     const query = `DELETE FROM SkillCategories WHERE skillID = ${skillID} AND categoryID = ${categoryID};`;
-    console.log(query);
 
     db.pool.query(query, function (err, results) {
         if (err) {
             console.error('Error fetching characters: ', err);
             res.status(500).send('Error fetching characters');
-            return;
         }
         res.redirect('/skillCategories.html');
     });
 });
 
+// Start listing for application
 app.listen(PORT, function () {
     console.log('Server started on http://localhost:' + PORT + '; press Ctrl-C to terminate.');
 });

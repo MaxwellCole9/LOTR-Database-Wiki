@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Items</title>
     <link rel="stylesheet" href="/css/styles.css">
-    
+
     <script>
         // Function for fetching and searching character data from the server
         function fetchItems(filter = '') { // Utilizing specifically the content typed into the search bar
             fetch('/api/items')              // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())        // await response to catch errors
                 .then(items => {
-                    const filteredItems = items.filter(item => 
+                    const filteredItems = items.filter(item =>
                         item.name.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
                     const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
                     container.innerHTML = '';         // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
@@ -24,8 +25,8 @@
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
-                        editButton.onclick = function() {
-                        toggleEditMode(itemElement, item);
+                        editButton.onclick = function () {
+                            toggleEditMode(itemElement, item);
                         };
                         itemElement.appendChild(editButton);
 
@@ -51,7 +52,7 @@
         }
 
         function toggleEditMode(itemElement, item) {
-        // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
+            // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
             if (itemElement.querySelector('input')) {
                 itemElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress  
                 itemElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress 
@@ -118,7 +119,7 @@
 
                 form.appendChild(div);
                 itemElement.appendChild(form);
-                
+
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 itemElement.querySelector('button').textContent = 'Cancel';
             }
@@ -177,7 +178,7 @@
                 addItemElement.appendChild(form);
 
                 // form.appendChild(questElement);
-                
+
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 addItemElement.querySelector('button').textContent = 'Cancel';
             }
@@ -189,14 +190,15 @@
             searchInput.addEventListener('input', () => {
                 const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
                 fetchItems(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
-        });
-        
+            });
+
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchItems();
         });
 
     </script>
 </head>
+
 <body>
     <header>
         <nav>
@@ -226,4 +228,5 @@
         <!-- Categories will be added here by the script -->
     </div>
 </body>
+
 </html>

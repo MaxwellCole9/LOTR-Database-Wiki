@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Categories</title>
@@ -11,7 +12,7 @@
             fetch('/api/categories')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())      // await response to catch errors
                 .then(categories => {
-                    const filteredCategories = categories.filter(category => 
+                    const filteredCategories = categories.filter(category =>
                         category.category.toLowerCase().includes(filter.toLowerCase())); // Ensuring input is processed as lowercase to find a match
                     const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
                     container.innerHTML = '';       // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
@@ -25,7 +26,7 @@
                         // Appending edit functionality to the bottom of each div
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
-                        editButton.onclick = function() {
+                        editButton.onclick = function () {
                             toggleEditMode(categoryElement, category);
                         };
                         categoryElement.appendChild(editButton);
@@ -52,7 +53,7 @@
         }
 
         function toggleEditMode(categoryElement, category) {
-        // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
+            // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
             if (categoryElement.querySelector('input')) {
                 categoryElement.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
                 categoryElement.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress 
@@ -109,18 +110,12 @@
                 const completeEditButton = document.createElement('button');
                 completeEditButton.textContent = 'Update';
                 completeEditButton.type = 'submit'
-                // console.log(quest);
-                // completeEditButton.onclick = function() {
-                //     updateQuest(quest)
-                // }
 
                 div.appendChild(completeEditButton);
 
                 form.appendChild(div);
                 categoryElement.appendChild(form);
 
-                // form.appendChild(questElement);
-                
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 categoryElement.querySelector('button').textContent = 'Cancel';
 
@@ -173,8 +168,6 @@
                 form.appendChild(div);
                 addCategoryElement.appendChild(form);
 
-                // form.appendChild(questElement);
-                
                 // Changing button text to Cancel after initial press to indicate user can cancel edit
                 addCategoryElement.querySelector('button').textContent = 'Cancel';
             }
@@ -188,7 +181,7 @@
                 const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
                 fetchCategories(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
             });
-        
+
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchCategories();
         });
@@ -196,6 +189,7 @@
     </script>
 
 </head>
+
 <body>
     <header>
         <nav>
@@ -225,4 +219,5 @@
         <!-- Categories will be added here by the script -->
     </div>
 </body>
+
 </html>

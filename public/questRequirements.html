@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Character Skills</title>
@@ -11,8 +12,6 @@
             fetch('/api/QuestRequirements')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())      // await response to catch errors
                 .then(QuestRequirements => {
-                    // const filteredQuestRequirements = QuestRequirements.filter(QuestRequirement => 
-                    // QuestRequirement.characterId == filter); // Ensuring input is processed as lowercase to find a match
 
                     const container = document.getElementById('container');           // Finding document 'container' placeholder to be filled with data
                     container.innerHTML = '';       // Clear existing content if exists (ensuring search functionality properly displays ONLY requested data)
@@ -22,13 +21,6 @@
                         // Filling inner HTML with specific entity data, providing tags to ensure proper formatting for user.
                         QuestRequirementsElement.innerHTML = `<h2>Quest: ${QuestRequirement.questTitle}</h2>
                                                             <h2>Character: ${QuestRequirement.name}</h2>`;
-                        // Appending edit functionality to the bottom of each div
-                        // const editButton = document.createElement('button');
-                        // editButton.textContent = 'Edit';
-                        // editButton.onclick = function() {
-                        // toggleEditMode(QuestRequirementsElement, QuestRequirement);
-                        // };
-                        // QuestRequirementsElement.appendChild(editButton);
 
                         // Create form for delete button
                         const form = document.createElement('form');
@@ -53,100 +45,92 @@
 
         function toggleAddFunction(element, SkillCategory) {
 
-element = document.getElementById('addContainer');
+            element = document.getElementById('addContainer');
 
-// Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
-if (element.querySelector('option')) {
-    element.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
-    element.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress
-    element.querySelector('button').textContent = 'Add New Item Category';     // Reset back to edit if the current edit session is cancelled.
-} else {
+            // Checking to see if user is already in edit mode, if so, button press exits the edit mode (1 button functionality implementation)
+            if (element.querySelector('option')) {
+                element.querySelectorAll('.editSection').forEach(e => e.remove()); // Ensures each div is removed from the edit section on button repress 
+                element.querySelectorAll('.form').forEach(e => e.remove()); // Ensures each form is removed from the edit section on button repress
+                element.querySelector('button').textContent = 'Add New Item Category';     // Reset back to edit if the current edit session is cancelled.
+            } else {
 
-    // Citation for form function usage
-    // Date: 2/29/2024
-    // Adapted from usage found on w3schools website, with
-    //  regards to attributes and actions.
-    // Source URL: https://www.w3schools.com/tags/tag_form.asp
-    const form = document.createElement('form');
-    form.id = "addQuestRequirement";
-    form.action = '/api/addQuestRequirement';
-    form.method = 'POST';
-    form.className = 'form';
+                // Citation for form function usage
+                // Date: 2/29/2024
+                // Adapted from usage found on w3schools website, with
+                //  regards to attributes and actions.
+                // Source URL: https://www.w3schools.com/tags/tag_form.asp
+                const form = document.createElement('form');
+                form.id = "addQuestRequirement";
+                form.action = '/api/addQuestRequirement';
+                form.method = 'POST';
+                form.className = 'form';
 
-    // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
-    const fields = ['questTitle', 'name'];
-    const fieldNames = {
-        'questTitle': 'Quest',
-        'name': 'Character'
-    }
-    fields.forEach(field => {
-        const div = document.createElement('div');
-        div.className = 'editSection';
+                // else, the edit mode is triggered. Each field is replaced with an input field for user to edit.
+                const fields = ['questTitle', 'name'];
+                const fieldNames = {
+                    'questTitle': 'Quest',
+                    'name': 'Character'
+                }
+                fields.forEach(field => {
+                    const div = document.createElement('div');
+                    div.className = 'editSection';
 
-        // creating input labels for current types in the entity. this reads in the label to display to the user.
-        div.innerHTML = `<p>${fieldNames[field]}: </p>`
+                    // creating input labels for current types in the entity. this reads in the label to display to the user.
+                    div.innerHTML = `<p>${fieldNames[field]}: </p>`
 
-        if (field === 'questTitle') {
-            createQuestDropdown(div);
-        } else if (field === 'name') {
-            createCharacterDropdown(div);
+                    if (field === 'questTitle') {
+                        createQuestDropdown(div);
+                    } else if (field === 'name') {
+                        createCharacterDropdown(div);
+                    }
+                    form.appendChild(div);
+                });
+
+                const div = document.createElement('div');
+                div.className = 'editSection';
+
+                // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
+                const completeEditButton = document.createElement('button');
+                completeEditButton.textContent = 'Add';
+                completeEditButton.type = 'submit'
+
+                div.appendChild(completeEditButton);
+
+                form.appendChild(div);
+                element.appendChild(form);
+
+                // Changing button text to Cancel after initial press to indicate user can cancel edit
+                element.querySelector('button').textContent = 'Cancel';
+            }
         }
 
-        // creating input fields for current types in the entity. this reads in the current value to display the text as an editable parameter.
-        // const editInput = document.createElement('input');
-        // editInput.type = 'text';
-        // editInput.name = field;
-        // editInput.id = field;
-        // div.appendChild(editInput);
+        // Citation for the dropdown functions below
+        // Date: 3/7/2024
+        // Adapted from usage found on this stack overflow post
+        //  with regards to creating a dropdown menu in javascript.
+        // Source: https://stackoverflow.com/questions/23718753/javascript-to-create-a-dropdown-list-and-get-the-selected-value
+        function createQuestDropdown(element) {
+            fetch('/api/Quests')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
+                .then(response => response.json())      // await response to catch errors
+                .then(quests => {
 
-        form.appendChild(div);
-    });
+                    const select = document.createElement('select');
+                    select.name = "questID";
+                    select.id = "questID";
 
-    const div = document.createElement('div');
-    div.className = 'editSection';
+                    quests.forEach(quest => {
+                        let option = document.createElement('option');
+                        option.value = quest.questID
+                        option.innerHTML = quest.questTitle
+                        option.id = quest.questID
+                        select.appendChild(option);
+                    });
 
-    // creating delete and edit buttons for the edit field (FRONTEND ONLY - WILL NEED BACKEND IN NEXT STEP)
-    const completeEditButton = document.createElement('button');
-    completeEditButton.textContent = 'Add';
-    completeEditButton.type = 'submit'
+                    element.appendChild(select);
+                });
+        }
 
-    div.appendChild(completeEditButton);
-
-    form.appendChild(div);
-    element.appendChild(form);
-
-    // Changing button text to Cancel after initial press to indicate user can cancel edit
-    element.querySelector('button').textContent = 'Cancel';
-}
-}
-
-// Citation for the dropdown functions below
-// Date: 3/7/2024
-// Adapted from usage found on this stack overflow post
-//  with regards to creating a dropdown menu in javascript.
-// Source: https://stackoverflow.com/questions/23718753/javascript-to-create-a-dropdown-list-and-get-the-selected-value
-function createQuestDropdown(element) {
-fetch('/api/Quests')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
-    .then(response => response.json())      // await response to catch errors
-    .then(quests => {
-
-        const select = document.createElement('select');
-        select.name = "questID";
-        select.id = "questID";
-
-        quests.forEach(quest => {
-            let option = document.createElement('option');
-            option.value = quest.questID
-            option.innerHTML = quest.questTitle
-            option.id = quest.questID
-            select.appendChild(option);
-        });
-
-        element.appendChild(select);
-    });
-}
-
-function createCharacterDropdown(element) {
+        function createCharacterDropdown(element) {
             fetch('/api/Characters')            // ENSURE THIS IS THE CORRECT PATH FOR SPECIFIC PAGE
                 .then(response => response.json())      // await response to catch errors
                 .then(characters => {
@@ -166,22 +150,17 @@ function createCharacterDropdown(element) {
                     element.appendChild(select);
                 });
         }
-        
-    
+
+
         // Function to specifically handle user input into search bar and apply it to a filter for fetchCharacters
         document.addEventListener('DOMContentLoaded', () => {
-            // const searchInput = document.getElementById('search');
-            // searchInput.addEventListener('input', () => {
-            //     const filter = searchInput.value;  // applying input to filter variable to be used in fetchCharacters
-            //     fetchQuestRequirements(filter);        // Calling filter/display function at each character input to dynamically update as typing occurs       
-            // });
-        
             // Initial fetch of characters without filter (ensures all display on initial page load)
             fetchQuestRequirements();
         });
 
     </script>
 </head>
+
 <body>
     <header>
         <nav>
@@ -200,7 +179,7 @@ function createCharacterDropdown(element) {
 
     <h1 id="page-title">Quest Requirements</h1>
     <!-- <input type="text" id="search" placeholder="Search items"> -->
-    
+
     <div id="addContainer">
         <button type="button" id="addQuestRequirement" onclick=toggleAddFunction()>Add New Quest Requirement</button>
         <!-- Form will be added here by the script -->
@@ -210,4 +189,5 @@ function createCharacterDropdown(element) {
         <!-- Characters will be added here by the script -->
     </div>
 </body>
+
 </html>
